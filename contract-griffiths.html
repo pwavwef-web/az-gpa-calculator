@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employment Contract – Griffiths Ampiaw | AZ GPA Calculator</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
+
+    <style>
+        /* ─── Screen Styles ───────────────────────────────────── */
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: #f8fafc;
+            color: #1e293b;
+            margin: 0;
+            padding: 0;
+        }
+
+        .screen-bar {
+            background: #0f172a;
+            color: #fff;
+            padding: 14px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        .screen-bar a { color: #93c5fd; text-decoration: none; font-size: 13px; }
+        .screen-bar a:hover { text-decoration: underline; }
+        .print-btn {
+            background: #0891b2;
+            color: #fff;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: inherit;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .print-btn:hover { background: #0e7490; }
+
+        .contract-wrapper {
+            max-width: 860px;
+            margin: 32px auto;
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 4px 40px rgba(0,0,0,0.08);
+            padding: 60px 70px;
+        }
+
+        /* ─── Contract Content Styles ─────────────────────────── */
+        .contract-header { text-align: center; margin-bottom: 40px; border-bottom: 3px solid #0891b2; padding-bottom: 28px; }
+        .contract-header .logo {
+            display: inline-flex; align-items: center; gap: 10px; margin-bottom: 14px;
+        }
+        .contract-header .logo-box {
+            width: 44px; height: 44px; border-radius: 10px;
+            background: linear-gradient(135deg, #06b6d4, #0891b2);
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 900; font-size: 15px; color: #fff;
+        }
+        .contract-header .org-name { font-size: 18px; font-weight: 800; color: #0e7490; }
+        .contract-header .org-sub  { font-size: 12px; color: #64748b; margin-top: 2px; }
+        .contract-header h1 { font-size: 22px; font-weight: 900; color: #0f172a; margin: 0 0 6px; text-transform: uppercase; letter-spacing: 1px; }
+        .contract-header .ref { font-size: 12px; color: #64748b; }
+
+        .parties-table {
+            width: 100%; border-collapse: collapse; margin-bottom: 32px; font-size: 13.5px;
+        }
+        .parties-table td { padding: 8px 12px; vertical-align: top; }
+        .parties-table .label { font-weight: 700; color: #0e7490; width: 200px; }
+        .parties-table .value { color: #334155; }
+
+        h2 { font-size: 14px; font-weight: 800; color: #0e7490; text-transform: uppercase; letter-spacing: 0.5px;
+             border-left: 4px solid #06b6d4; padding-left: 10px; margin-top: 30px; margin-bottom: 12px; }
+        p  { font-size: 13.5px; color: #334155; line-height: 1.8; margin: 0 0 10px; }
+        ol, ul { font-size: 13.5px; color: #334155; line-height: 1.8; margin: 0 0 12px; padding-left: 22px; }
+        li { margin-bottom: 5px; }
+
+        .highlight-box {
+            background: #ecfeff; border: 1px solid #a5f3fc; border-radius: 10px;
+            padding: 16px 20px; margin-bottom: 20px; font-size: 13px; color: #0e7490;
+        }
+
+        .signature-block {
+            margin-top: 48px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+        }
+        .sig-section { border-top: 1px solid #cbd5e1; padding-top: 16px; }
+        .sig-section .sig-label { font-weight: 700; font-size: 12px; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+        .sig-section .sig-name  { font-size: 13.5px; font-weight: 600; color: #0f172a; margin-bottom: 2px; }
+        .sig-section .sig-title { font-size: 12px; color: #64748b; margin-bottom: 24px; }
+        .sig-line { border-top: 1px solid #0f172a; margin-top: 48px; padding-top: 6px; font-size: 11px; color: #94a3b8; }
+
+        .footer-note {
+            margin-top: 48px; border-top: 1px solid #e2e8f0; padding-top: 16px;
+            text-align: center; font-size: 11px; color: #94a3b8;
+        }
+
+        /* ─── Print Styles ────────────────────────────────────── */
+        @media print {
+            body { background: #fff; }
+            .screen-bar { display: none !important; }
+            .contract-wrapper {
+                box-shadow: none; border-radius: 0;
+                margin: 0; padding: 40px 50px;
+                max-width: 100%;
+            }
+            h2 { page-break-after: avoid; }
+            .signature-block { page-break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Screen-only bar -->
+    <div class="screen-bar">
+        <div>
+            <div style="font-weight:800;font-size:15px;">AZ GPA Calculator &mdash; Contract</div>
+            <div style="font-size:12px;color:#94a3b8;">Griffiths Ampiaw &bull; Assistant Operations Manager</div>
+        </div>
+        <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+            <a href="contracts.html">&larr; Back to Contracts</a>
+            <button class="print-btn" onclick="window.print()">
+                &#128438; Download / Print PDF
+            </button>
+        </div>
+    </div>
+
+    <!-- Contract Document -->
+    <div class="contract-wrapper">
+
+        <!-- Header -->
+        <div class="contract-header">
+            <div class="logo">
+                <div class="logo-box">AZ</div>
+                <div>
+                    <div class="org-name">Francis Pwavwe Production</div>
+                    <div class="org-sub">Trading as AZ Learner &nbsp;&bull;&nbsp; pwavwef@gmail.com</div>
+                </div>
+            </div>
+            <h1>Team Collaboration &amp; Employment Contract</h1>
+            <div class="ref">Contract Ref: FPP/AZ-GPA/AOM/2026/002 &nbsp;&bull;&nbsp; Dated: 1st March, 2026</div>
+        </div>
+
+        <!-- Parties -->
+        <h2>1. Parties to the Agreement</h2>
+        <p>This Contract is entered into between the following parties:</p>
+        <table class="parties-table">
+            <tr>
+                <td class="label">Employer / Organisation</td>
+                <td class="value">Francis Pwavwe Production (operating as <strong>AZ Learner</strong>)</td>
+            </tr>
+            <tr>
+                <td class="label">CEO / Authorising Officer</td>
+                <td class="value">Francis Pwavwe &bull; pwavwef@gmail.com</td>
+            </tr>
+            <tr>
+                <td class="label">Employee / Team Member</td>
+                <td class="value"><strong>Griffiths Ampiaw</strong></td>
+            </tr>
+            <tr>
+                <td class="label">Designation</td>
+                <td class="value"><strong>Assistant Operations Manager</strong></td>
+            </tr>
+            <tr>
+                <td class="label">Project</td>
+                <td class="value">AZ GPA Calculator &mdash; Flutter-based Predictive Academic Intelligence App</td>
+            </tr>
+            <tr>
+                <td class="label">Contract Type</td>
+                <td class="value">Project-Based Collaboration with Pathway to Permanent Employment</td>
+            </tr>
+            <tr>
+                <td class="label">Contract Date</td>
+                <td class="value">1st March, 2026</td>
+            </tr>
+        </table>
+
+        <!-- Background -->
+        <h2>2. Background &amp; Purpose</h2>
+        <p>
+            Francis Pwavwe Production, operating under the brand <strong>AZ Learner</strong>, is developing the <strong>AZ GPA Calculator</strong> — a Flutter-based, offline-first predictive academic intelligence mobile application designed to serve university students in Ghana and across Africa. The organisation hereby engages <strong>Griffiths Ampiaw</strong> as <strong>Assistant Operations Manager</strong> to support and augment the operational execution of the project.
+        </p>
+
+        <!-- Role & Responsibilities -->
+        <h2>3. Role and Responsibilities</h2>
+        <p>As <strong>Assistant Operations Manager</strong>, Griffiths Ampiaw shall:</p>
+        <ol>
+            <li>Assist the Chief Operations Manager (Patrick Amada) in overseeing all operational activities of the AZ GPA Calculator project.</li>
+            <li>Execute day-to-day operational tasks as assigned by the Chief Operations Manager and/or CEO.</li>
+            <li>Support the planning, scheduling, and coordination of project activities and team workflows.</li>
+            <li>Help maintain operational documentation, records, and standard operating procedures (SOPs).</li>
+            <li>Act as a liaison between the operations team and other project teams (development, design, marketing).</li>
+            <li>Monitor task progress and escalate issues promptly to the Chief Operations Manager.</li>
+            <li>Assist in managing relationships with external vendors, partners, and stakeholders as directed.</li>
+            <li>Participate in all project meetings, stand-ups, and progress review sessions.</li>
+            <li>Undertake specific operational projects and initiatives as assigned by leadership.</li>
+            <li>Deputise for the Chief Operations Manager in their absence, ensuring operational continuity.</li>
+            <li>Contribute ideas and process improvement suggestions to enhance team productivity.</li>
+        </ol>
+
+        <!-- Duration -->
+        <h2>4. Duration of Engagement</h2>
+        <p>
+            This engagement commences upon signing of this contract and covers the full lifecycle of the AZ GPA Calculator project across all phases: <em>Research, Planning, Design, Development, Testing, Documentation, Launch, Marketing, and Review</em>.
+        </p>
+        <p>
+            This contract shall be reviewed at the end of each major project phase, and may be extended, revised, or converted to a permanent employment agreement at the sole discretion of the CEO.
+        </p>
+
+        <!-- Time Commitment -->
+        <h2>5. Time Commitment</h2>
+        <p>
+            Griffiths Ampiaw is expected to dedicate a minimum of <strong>12 hours per week</strong> to the project during the Research and Planning phases, scaling to a <strong>full-time or near-full-time commitment</strong> during Development, Testing, and Launch phases, or as agreed with the CEO and Chief Operations Manager. Flexibility arrangements shall be discussed and confirmed in writing.
+        </p>
+
+        <!-- Remuneration -->
+        <h2>6. Remuneration and Benefits</h2>
+        <div class="highlight-box">
+            &#9432;&nbsp; <strong>Pre-Operations Notice:</strong> The project is currently in the Research phase and has not yet commenced full commercial operations. Remuneration terms described below take effect upon the commencement of operations as formally declared by the CEO. During the pre-operations period, this engagement is voluntary and equity-based.
+        </div>
+        <p><strong>Upon Commencement of Operations:</strong></p>
+        <ol>
+            <li><strong>Monthly Salary:</strong> A competitive monthly salary for the role of Assistant Operations Manager, to be agreed in writing between Griffiths Ampiaw and the CEO prior to the commencement of operations. The salary shall be benchmarked against industry standards for a similar role in Ghana.</li>
+            <li><strong>Equity / Profit Share:</strong> Griffiths Ampiaw shall be entitled to a negotiated equity stake or profit-sharing percentage in the AZ GPA Calculator revenue stream, to be formalised in a separate equity agreement upon commencement of operations.</li>
+            <li><strong>Performance Bonuses:</strong> Quarterly performance bonuses based on achievement of agreed KPIs and project milestones, as determined by the CEO and Chief Operations Manager.</li>
+            <li><strong>Benefits:</strong> Upon commencement of operations, benefits shall include mobile data allowance, transport allowance, and any other benefits as may be agreed upon in writing.</li>
+            <li><strong>Career Progression:</strong> Griffiths Ampiaw shall receive priority consideration for promotion to Chief Operations Manager or other senior roles as the organisation grows.</li>
+            <li><strong>Pre-Operations Compensation:</strong> While no fixed monetary compensation is provided during the pre-operations phase, Griffiths Ampiaw shall receive formal recognition, a letter of reference, and priority consideration for senior roles upon business launch.</li>
+        </ol>
+
+        <!-- Confidentiality -->
+        <h2>7. Confidentiality</h2>
+        <p>
+            Griffiths Ampiaw agrees to maintain strict confidentiality regarding all proprietary information, business strategies, technical architectures, source code, financial data, user data, marketing plans, and any other information relating to the AZ GPA Calculator project and AZ Learner ecosystem.
+        </p>
+        <p>
+            This obligation of confidentiality shall survive the termination of this contract for a period of <strong>three (3) years</strong> after the last date of engagement.
+        </p>
+
+        <!-- Intellectual Property -->
+        <h2>8. Intellectual Property</h2>
+        <p>
+            All works, deliverables, materials, processes, and outputs created by Griffiths Ampiaw in the course of performing duties under this contract shall be the exclusive intellectual property of <strong>Francis Pwavwe Production / AZ Learner</strong>.
+        </p>
+        <p>
+            Griffiths Ampiaw hereby assigns all intellectual property rights, including copyrights and related rights, to the Employer and shall execute any further documents necessary to perfect such assignment.
+        </p>
+
+        <!-- Exclusivity & Conflict of Interest -->
+        <h2>9. Exclusivity and Conflict of Interest</h2>
+        <p>
+            Griffiths Ampiaw shall not, during the term of this contract, engage in or be associated with any competing business, project, or product that offers substantially similar academic intelligence or GPA calculation tools targeting the same user base, without the prior written consent of the CEO.
+        </p>
+        <p>
+            Griffiths Ampiaw shall promptly disclose any actual or potential conflicts of interest to the CEO or Chief Operations Manager in writing.
+        </p>
+
+        <!-- Code of Conduct -->
+        <h2>10. Code of Conduct and Professional Standards</h2>
+        <ol>
+            <li>Maintain professionalism, integrity, and respect in all interactions with team members, partners, and stakeholders.</li>
+            <li>Represent AZ Learner and AZ GPA Calculator positively in all public and professional communications.</li>
+            <li>Adhere to all agreed project standards, processes, and documentation requirements.</li>
+            <li>Participate constructively in team meetings and provide honest and timely updates.</li>
+            <li>Refrain from disclosing, sharing, or using confidential project information for personal gain.</li>
+            <li>Demonstrate respect for the authority and decisions of the Chief Operations Manager and CEO.</li>
+        </ol>
+
+        <!-- Termination -->
+        <h2>11. Termination</h2>
+        <p>
+            Either party may terminate this contract with a minimum of <strong>30 days written notice</strong> to the other party. Immediate termination without notice may occur in cases of gross misconduct, breach of confidentiality, wilful negligence, or actions prejudicial to the interests of Francis Pwavwe Production / AZ Learner.
+        </p>
+        <p>
+            Upon termination, Griffiths Ampiaw shall return all project assets, documents, access credentials, and devices in their possession and shall have no further claim to remuneration beyond amounts duly earned up to the date of termination.
+        </p>
+
+        <!-- Dispute Resolution -->
+        <h2>12. Dispute Resolution</h2>
+        <p>
+            Any disputes arising from this contract shall first be addressed through direct negotiation between the parties in good faith. If unresolved within <strong>30 days</strong>, the matter may be referred to a mutually agreed mediator. This contract shall be governed by the laws of the <strong>Republic of Ghana</strong>.
+        </p>
+
+        <!-- General Provisions -->
+        <h2>13. General Provisions</h2>
+        <ol>
+            <li><strong>Amendments:</strong> Any amendments to this contract must be made in writing and signed by both parties.</li>
+            <li><strong>Entire Agreement:</strong> This contract constitutes the entire agreement between the parties with respect to its subject matter and supersedes all prior discussions and agreements.</li>
+            <li><strong>Severability:</strong> If any provision of this contract is found to be unenforceable, the remaining provisions shall continue in full force and effect.</li>
+            <li><strong>Waiver:</strong> Failure to exercise any right under this contract shall not constitute a waiver of that right.</li>
+            <li><strong>Notices:</strong> All formal notices shall be delivered by email to the respective party's confirmed email address.</li>
+        </ol>
+
+        <!-- Acceptance -->
+        <h2>14. Acceptance</h2>
+        <p>
+            By signing below, both parties confirm that they have read, understood, and agreed to all terms and conditions set out in this contract.
+        </p>
+
+        <!-- Signatures -->
+        <div class="signature-block">
+            <div class="sig-section">
+                <div class="sig-label">Employer / CEO</div>
+                <div class="sig-name">Francis Pwavwe</div>
+                <div class="sig-title">Chief Executive Officer, Francis Pwavwe Production / AZ Learner</div>
+                <div class="sig-line">Signature: _________________________ &nbsp; Date: _______________</div>
+            </div>
+            <div class="sig-section">
+                <div class="sig-label">Employee / Team Member</div>
+                <div class="sig-name">Griffiths Ampiaw</div>
+                <div class="sig-title">Assistant Operations Manager, AZ GPA Calculator</div>
+                <div class="sig-line">Signature: _________________________ &nbsp; Date: _______________</div>
+            </div>
+        </div>
+
+        <div class="footer-note">
+            <strong>Francis Pwavwe Production &bull; AZ Learner</strong><br>
+            pwavwef@gmail.com &bull; azlearner.me<br>
+            Contract Ref: FPP/AZ-GPA/AOM/2026/002 &bull; &copy; 2026 Francis Pwavwe Production. All rights reserved.
+        </div>
+
+    </div>
+
+</body>
+</html>

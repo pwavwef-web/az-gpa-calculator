@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="AZ GPA Calculator – A Flutter-based predictive academic intelligence mobile application by AZ Learner.">
+    <meta name="author" content="Francis Pwavwe Production">
+    <title>AZ GPA Calculator | Idea &amp; Roadmap</title>
+    <link rel="icon" type="image/png" href="https://pwavwef-web.github.io/favicon1.png">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+
+    <style>
+        :root {
+            --brand-blue: #3b82f6;
+            --brand-white: #ffffff;
+            --brand-orange: #FFAB40;
+        }
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #0f172a;
+            color: white;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+            -webkit-text-size-adjust: 100%;
+        }
+        *, *::before, *::after { box-sizing: border-box; }
+        html { overflow-x: hidden; }
+
+        .bg-animated {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: -2;
+            background: linear-gradient(-45deg, #020617, #0f172a, #1e3a8a, #172554);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+        }
+        @keyframes gradientBG {
+            0%   { background-position: 0% 50%; }
+            50%  { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .glass-panel {
+            background: rgba(255,255,255,0.03);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255,255,255,0.08);
+            box-shadow: 0 4px 30px rgba(0,0,0,0.1);
+        }
+        .glass-card {
+            background: rgba(255,255,255,0.03);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255,255,255,0.08);
+            transition: all 0.3s ease;
+        }
+        .glass-card:hover {
+            background: rgba(255,255,255,0.07);
+            border-color: rgba(255,255,255,0.2);
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+
+        .text-gradient {
+            background: linear-gradient(to right, #ffffff, #60a5fa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .text-gradient-orange {
+            background: linear-gradient(to right, #FFAB40, #ff6b00);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Roadmap */
+        .roadmap-step { position: relative; }
+        .roadmap-step:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            top: 28px; left: 22px;
+            width: 2px;
+            height: calc(100% - 28px);
+            background: linear-gradient(to bottom, rgba(59,130,246,0.4), rgba(59,130,246,0.05));
+        }
+        .step-icon {
+            width: 44px; height: 44px;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0;
+            font-size: 18px;
+            font-weight: 800;
+        }
+        .step-active   { background: linear-gradient(135deg,#3b82f6,#06b6d4); box-shadow: 0 0 20px rgba(59,130,246,0.5); }
+        .step-done     { background: linear-gradient(135deg,#22c55e,#16a34a); }
+        .step-pending  { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); color: #64748b; }
+
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #0f172a; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #475569; }
+
+        @media (prefers-reduced-motion: reduce) {
+            .bg-animated { animation: none; background: linear-gradient(-45deg,#020617,#0f172a,#1e3a8a,#172554); }
+        }
+
+        /* Nav active link */
+        .nav-link { transition: color 0.2s; }
+        .nav-link:hover { color: #60a5fa; }
+        .nav-active { color: #60a5fa; border-bottom: 2px solid #3b82f6; }
+
+        /* Pulse animation for "current phase" badge */
+        @keyframes pulse-glow {
+            0%,100% { box-shadow: 0 0 0 0 rgba(59,130,246,0.5); }
+            50%      { box-shadow: 0 0 0 8px rgba(59,130,246,0); }
+        }
+        .pulse-badge { animation: pulse-glow 2s ease-in-out infinite; }
+    </style>
+</head>
+<body class="antialiased">
+
+    <div class="bg-animated"></div>
+
+    <!-- ── Navigation ─────────────────────────────────────────── -->
+    <nav class="fixed top-0 left-0 right-0 z-50 glass-panel px-6 py-4">
+        <div class="max-w-6xl mx-auto flex items-center justify-between">
+            <a href="index.html" class="flex items-center gap-3">
+                <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-400 flex items-center justify-center font-black text-sm">AZ</div>
+                <span class="font-bold text-sm tracking-wide hidden sm:block">GPA Calculator</span>
+            </a>
+            <div class="flex items-center gap-1 sm:gap-4 text-sm font-medium text-gray-300">
+                <a href="index.html"     class="nav-link nav-active px-3 py-1">Idea</a>
+                <a href="team.html"      class="nav-link px-3 py-1">Team</a>
+                <a href="contracts.html" class="nav-link px-3 py-1">Contracts</a>
+                <a href="https://azlearner.me/" target="_blank"
+                   class="hidden sm:flex items-center gap-1 px-3 py-1 rounded-lg bg-blue-600 hover:bg-blue-500 text-white transition text-xs">
+                    <span class="material-symbols-outlined text-base">open_in_new</span> AZ Learner
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ── Hero ───────────────────────────────────────────────── -->
+    <section class="min-h-screen flex flex-col items-center justify-center text-center px-6 pt-24 pb-16">
+        <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-panel text-xs font-semibold text-blue-300 mb-6 border border-blue-500/30">
+            <span class="material-symbols-outlined text-base">bolt</span>
+            An AZ Learner Production
+        </div>
+
+        <h1 class="text-5xl sm:text-7xl font-black mb-6 leading-tight">
+            <span class="text-gradient">AZ GPA</span><br>
+            <span class="text-white">Calculator</span>
+        </h1>
+
+        <p class="max-w-xl text-gray-300 text-lg mb-4 leading-relaxed">
+            A <span class="text-blue-400 font-semibold">Flutter-based predictive academic intelligence</span> mobile application built for Ghanaian university students.
+        </p>
+        <p class="text-gray-400 text-sm mb-10">Idea Date: <span class="text-white font-semibold">1st March, 2026</span></p>
+
+        <div class="flex flex-wrap gap-3 justify-center">
+            <a href="#problem" class="px-6 py-3 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-semibold transition text-sm flex items-center gap-2">
+                <span class="material-symbols-outlined text-base">info</span> View Idea
+            </a>
+            <a href="#roadmap" class="px-6 py-3 rounded-xl glass-panel hover:bg-white/10 text-white font-semibold transition text-sm flex items-center gap-2 border border-white/10">
+                <span class="material-symbols-outlined text-base">map</span> Roadmap
+            </a>
+        </div>
+    </section>
+
+    <!-- ── Problem & Solution ─────────────────────────────────── -->
+    <section id="problem" class="max-w-6xl mx-auto px-6 pb-20">
+        <div class="text-center mb-14">
+            <h2 class="text-3xl sm:text-4xl font-black text-gradient mb-3">The Idea</h2>
+            <p class="text-gray-400 max-w-xl mx-auto">A comprehensive academic tool designed to eliminate uncertainty and empower students.</p>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-6 mb-12">
+            <!-- Problem -->
+            <div class="glass-card rounded-2xl p-7">
+                <div class="flex items-center gap-3 mb-5">
+                    <div class="w-10 h-10 rounded-xl bg-red-500/20 flex items-center justify-center">
+                        <span class="material-symbols-outlined text-red-400">warning</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-red-300">The Problem</h3>
+                </div>
+                <p class="text-gray-300 leading-relaxed">
+                    University students experience <strong class="text-white">academic uncertainty</strong> due to:
+                </p>
+                <ul class="mt-4 space-y-2 text-gray-400 text-sm">
+                    <li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">✗</span> Lack of accurate GPA tracking tools</li>
+                    <li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">✗</span> Unreliable internet connectivity on campus</li>
+                    <li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">✗</span> Absence of predictive academic guidance</li>
+                    <li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">✗</span> No scenario-planning tools for GPA goals</li>
+                </ul>
+            </div>
+
+            <!-- Solution -->
+            <div class="glass-card rounded-2xl p-7">
+                <div class="flex items-center gap-3 mb-5">
+                    <div class="w-10 h-10 rounded-xl bg-green-500/20 flex items-center justify-center">
+                        <span class="material-symbols-outlined text-green-400">check_circle</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-green-300">The Solution</h3>
+                </div>
+                <p class="text-gray-300 leading-relaxed">
+                    <strong class="text-white">AZ GPA Calculator</strong> is an <span class="text-green-400">offline-first</span> Flutter app that:
+                </p>
+                <ul class="mt-4 space-y-2 text-gray-400 text-sm">
+                    <li class="flex items-start gap-2"><span class="text-green-400 mt-0.5">✓</span> Calculates GPA accurately</li>
+                    <li class="flex items-start gap-2"><span class="text-green-400 mt-0.5">✓</span> Forecasts final GPA outcomes</li>
+                    <li class="flex items-start gap-2"><span class="text-green-400 mt-0.5">✓</span> Stores semester data for long-term tracking</li>
+                    <li class="flex items-start gap-2"><span class="text-green-400 mt-0.5">✓</span> Simulates "what-if" academic scenarios</li>
+                    <li class="flex items-start gap-2"><span class="text-green-400 mt-0.5">✓</span> Provides AI-powered academic optimization advice</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Key Features -->
+        <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-12">
+            <div class="glass-card rounded-2xl p-5 text-center">
+                <span class="material-symbols-outlined text-3xl text-blue-400 mb-3 block">wifi_off</span>
+                <h4 class="font-bold mb-1">Offline-First</h4>
+                <p class="text-gray-400 text-xs">Fully functional without internet</p>
+            </div>
+            <div class="glass-card rounded-2xl p-5 text-center">
+                <span class="material-symbols-outlined text-3xl text-cyan-400 mb-3 block">storage</span>
+                <h4 class="font-bold mb-1">Persistent Storage</h4>
+                <p class="text-gray-400 text-xs">Academic records saved locally</p>
+            </div>
+            <div class="glass-card rounded-2xl p-5 text-center">
+                <span class="material-symbols-outlined text-3xl text-orange-400 mb-3 block">trending_up</span>
+                <h4 class="font-bold mb-1">GPA Simulation</h4>
+                <p class="text-gray-400 text-xs">Predictive GPA scenario planning</p>
+            </div>
+            <div class="glass-card rounded-2xl p-5 text-center">
+                <span class="material-symbols-outlined text-3xl text-purple-400 mb-3 block">psychology</span>
+                <h4 class="font-bold mb-1">AI Advisory</h4>
+                <p class="text-gray-400 text-xs">Smart academic guidance system</p>
+            </div>
+        </div>
+
+        <!-- Impact -->
+        <div class="glass-card rounded-2xl p-8">
+            <div class="flex items-center gap-3 mb-6">
+                <div class="w-10 h-10 rounded-xl bg-yellow-500/20 flex items-center justify-center">
+                    <span class="material-symbols-outlined text-yellow-400">bar_chart</span>
+                </div>
+                <h3 class="text-xl font-bold text-yellow-300">Potential Impact</h3>
+            </div>
+            <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div class="text-center p-4 rounded-xl bg-white/5">
+                    <div class="text-2xl mb-2">😌</div>
+                    <p class="text-sm font-semibold text-white">Reduced Academic Anxiety</p>
+                </div>
+                <div class="text-center p-4 rounded-xl bg-white/5">
+                    <div class="text-2xl mb-2">📈</div>
+                    <p class="text-sm font-semibold text-white">Improved GPA Planning</p>
+                </div>
+                <div class="text-center p-4 rounded-xl bg-white/5">
+                    <div class="text-2xl mb-2">🎓</div>
+                    <p class="text-sm font-semibold text-white">Higher Graduation Performance</p>
+                </div>
+                <div class="text-center p-4 rounded-xl bg-white/5">
+                    <div class="text-2xl mb-2">🚀</div>
+                    <p class="text-sm font-semibold text-white">Strategic AZ Learner Entry</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ── Roadmap ────────────────────────────────────────────── -->
+    <section id="roadmap" class="max-w-4xl mx-auto px-6 pb-24">
+        <div class="text-center mb-14">
+            <h2 class="text-3xl sm:text-4xl font-black text-gradient mb-3">Project Roadmap</h2>
+            <p class="text-gray-400 max-w-xl mx-auto">Tracking the journey from idea to a fully shipped academic intelligence app.</p>
+        </div>
+
+        <div class="space-y-4 pl-2">
+
+            <!-- 1. Idea – done -->
+            <div class="roadmap-step flex items-start gap-5">
+                <div class="step-icon step-done text-white mt-1">
+                    <span class="material-symbols-outlined text-lg">lightbulb</span>
+                </div>
+                <div class="glass-card rounded-2xl p-5 flex-1">
+                    <div class="flex items-center justify-between flex-wrap gap-2">
+                        <h4 class="font-bold text-lg text-white">Idea</h4>
+                        <span class="text-xs px-2 py-1 rounded-full bg-green-500/20 text-green-300 font-semibold">✓ Completed</span>
+                    </div>
+                    <p class="text-gray-400 text-sm mt-1">Define the concept, problem statement, and proposed solution for AZ GPA Calculator.</p>
+                    <p class="text-gray-500 text-xs mt-2">1st March, 2026</p>
+                </div>
+            </div>
+
+            <!-- 2. Research – ACTIVE -->
+            <div class="roadmap-step flex items-start gap-5">
+                <div class="step-icon step-active text-white mt-1 pulse-badge">
+                    <span class="material-symbols-outlined text-lg">search</span>
+                </div>
+                <div class="glass-card rounded-2xl p-5 flex-1 border border-blue-500/40">
+                    <div class="flex items-center justify-between flex-wrap gap-2">
+                        <h4 class="font-bold text-lg text-white">Research</h4>
+                        <span class="text-xs px-2 py-1 rounded-full bg-blue-600/30 text-blue-300 font-semibold border border-blue-500/40 pulse-badge">▶ Current Phase</span>
+                    </div>
+                    <p class="text-gray-400 text-sm mt-1">Market research, competitor analysis, user interviews, and technical feasibility study for a Flutter + offline-first GPA app.</p>
+                </div>
+            </div>
+
+            <!-- 3. Planning -->
+            <div class="roadmap-step flex items-start gap-5">
+                <div class="step-icon step-pending text-gray-500 mt-1">
+                    <span class="material-symbols-outlined text-lg">event_note</span>
+                </div>
+                <div class="glass-card rounded-2xl p-5 flex-1 opacity-70">
+                    <div class="flex items-center justify-between flex-wrap gap-2">
+                        <h4 class="font-bold text-lg text-white">Planning</h4>
+                        <span class="text-xs px-2 py-1 rounded-full bg-gray-700/50 text-gray-400 font-semibold">Upcoming</span>
+                    </div>
+                    <p class="text-gray-400 text-sm mt-1">Define feature scope, create project plan, allocate roles, establish timelines, and set milestones.</p>
+                </div>
+            </div>
+
+            <!-- 4. Design -->
+            <div class="roadmap-step flex items-start gap-5">
+                <div class="step-icon step-pending text-gray-500 mt-1">
+                    <span class="material-symbols-outlined text-lg">palette</span>
+                </div>
+                <div class="glass-card rounded-2xl p-5 flex-1 opacity-60">
+                    <div class="flex items-center justify-between flex-wrap gap-2">
+                        <h4 class="font-bold text-lg text-white">Design</h4>
+                        <span class="text-xs px-2 py-1 rounded-full bg-gray-700/50 text-gray-400 font-semibold">Upcoming</span>
+                    </div>
+                    <p class="text-gray-400 text-sm mt-1">UI/UX wireframes, branding system, app design in Figma aligned with AZ Learner visual identity.</p>
+                </div>
+            </div>
+
+            <!-- 5. Development -->
+            <div class="roadmap-step flex items-start gap-5">
+                <div class="step-icon step-pending text-gray-500 mt-1">
+                    <span class="material-symbols-outlined text-lg">code</span>
+                </div>
+                <div class="glass-card rounded-2xl p-5 flex-1 opacity-60">
+                    <div class="flex items-center justify-between flex-wrap gap-2">
+                        <h4 class="font-bold text-lg text-white">Development</h4>
+                        <span class="text-xs px-2 py-1 rounded-full bg-gray-700/50 text-gray-400 font-semibold">Upcoming</span>
+                    </div>
+                    <p class="text-gray-400 text-sm mt-1">Flutter app development — GPA engine, offline database, predictive algorithms, AI advisory module.</p>
+                </div>
+            </div>
+
+            <!-- 6. Testing -->
+            <div class="roadmap-step flex items-start gap-5">
+                <div class="step-icon step-pending text-gray-500 mt-1">
+                    <span class="material-symbols-outlined text-lg">bug_report</span>
+                </div>
+                <div class="glass-card rounded-2xl p-5 flex-1 opacity-60">
+                    <div class="flex items-center justify-between flex-wrap gap-2">
+                        <h4 class="font-bold text-lg text-white">Testing</h4>
+                        <span class="text-xs px-2 py-1 rounded-full bg-gray-700/50 text-gray-400 font-semibold">Upcoming</span>
+                    </div>
+                    <p class="text-gray-400 text-sm mt-1">QA testing, beta testing with target students, bug fixes, performance optimization.</p>
+                </div>
+            </div>
+
+            <!-- 7. Documentation -->
+            <div class="roadmap-step flex items-start gap-5">
+                <div class="step-icon step-pending text-gray-500 mt-1">
+                    <span class="material-symbols-outlined text-lg">description</span>
+                </div>
+                <div class="glass-card rounded-2xl p-5 flex-1 opacity-60">
+                    <div class="flex items-center justify-between flex-wrap gap-2">
+                        <h4 class="font-bold text-lg text-white">Documentation</h4>
+                        <span class="text-xs px-2 py-1 rounded-full bg-gray-700/50 text-gray-400 font-semibold">Upcoming</span>
+                    </div>
+                    <p class="text-gray-400 text-sm mt-1">Technical docs, user guides, API references, and internal project documentation.</p>
+                </div>
+            </div>
+
+            <!-- 8. Launch -->
+            <div class="roadmap-step flex items-start gap-5">
+                <div class="step-icon step-pending text-gray-500 mt-1">
+                    <span class="material-symbols-outlined text-lg">rocket_launch</span>
+                </div>
+                <div class="glass-card rounded-2xl p-5 flex-1 opacity-60">
+                    <div class="flex items-center justify-between flex-wrap gap-2">
+                        <h4 class="font-bold text-lg text-white">Launch</h4>
+                        <span class="text-xs px-2 py-1 rounded-full bg-gray-700/50 text-gray-400 font-semibold">Upcoming</span>
+                    </div>
+                    <p class="text-gray-400 text-sm mt-1">App store release (Google Play), website launch, press release, and first public deployment.</p>
+                </div>
+            </div>
+
+            <!-- 9. Marketing -->
+            <div class="roadmap-step flex items-start gap-5">
+                <div class="step-icon step-pending text-gray-500 mt-1">
+                    <span class="material-symbols-outlined text-lg">campaign</span>
+                </div>
+                <div class="glass-card rounded-2xl p-5 flex-1 opacity-60">
+                    <div class="flex items-center justify-between flex-wrap gap-2">
+                        <h4 class="font-bold text-lg text-white">Marketing</h4>
+                        <span class="text-xs px-2 py-1 rounded-full bg-gray-700/50 text-gray-400 font-semibold">Upcoming</span>
+                    </div>
+                    <p class="text-gray-400 text-sm mt-1">Campus ambassador programs, social media campaigns, student community outreach at UCC and beyond.</p>
+                </div>
+            </div>
+
+            <!-- 10. Review -->
+            <div class="roadmap-step flex items-start gap-5">
+                <div class="step-icon step-pending text-gray-500 mt-1">
+                    <span class="material-symbols-outlined text-lg">rate_review</span>
+                </div>
+                <div class="glass-card rounded-2xl p-5 flex-1 opacity-60">
+                    <div class="flex items-center justify-between flex-wrap gap-2">
+                        <h4 class="font-bold text-lg text-white">Review</h4>
+                        <span class="text-xs px-2 py-1 rounded-full bg-gray-700/50 text-gray-400 font-semibold">Upcoming</span>
+                    </div>
+                    <p class="text-gray-400 text-sm mt-1">User feedback analysis, performance metrics review, iteration planning, and feature roadmap update.</p>
+                </div>
+            </div>
+
+            <!-- 11. Archive -->
+            <div class="flex items-start gap-5">
+                <div class="step-icon step-pending text-gray-500 mt-1">
+                    <span class="material-symbols-outlined text-lg">archive</span>
+                </div>
+                <div class="glass-card rounded-2xl p-5 flex-1 opacity-50">
+                    <div class="flex items-center justify-between flex-wrap gap-2">
+                        <h4 class="font-bold text-lg text-white">Archive</h4>
+                        <span class="text-xs px-2 py-1 rounded-full bg-gray-700/50 text-gray-400 font-semibold">Upcoming</span>
+                    </div>
+                    <p class="text-gray-400 text-sm mt-1">Project documentation archival, knowledge transfer, and integration records into the AZ Learner ecosystem.</p>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ── Footer ─────────────────────────────────────────────── -->
+    <footer class="border-t border-white/5 py-10 text-center px-6">
+        <div class="max-w-6xl mx-auto">
+            <div class="flex items-center justify-center gap-3 mb-4">
+                <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-cyan-400 flex items-center justify-center font-black text-xs">AZ</div>
+                <span class="font-bold text-white">AZ GPA Calculator</span>
+            </div>
+            <p class="text-gray-500 text-sm mb-2">An AZ Learner production &nbsp;·&nbsp; &copy; 2026 Francis Pwavwe Production</p>
+            <p class="text-gray-600 text-xs">
+                <a href="mailto:pwavwef@gmail.com" class="hover:text-blue-400 transition">pwavwef@gmail.com</a>
+                &nbsp;·&nbsp;
+                <a href="https://azlearner.me/" target="_blank" class="hover:text-blue-400 transition">azlearner.me</a>
+            </p>
+            <div class="flex justify-center gap-4 mt-4 text-sm text-gray-500">
+                <a href="index.html"     class="hover:text-white transition">Idea</a>
+                <a href="team.html"      class="hover:text-white transition">Team</a>
+                <a href="contracts.html" class="hover:text-white transition">Contracts</a>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>
