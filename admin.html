@@ -158,6 +158,8 @@
         @media (prefers-reduced-motion: reduce) {
             .bg-animated { animation: none; background: linear-gradient(-45deg,#020617,#0f172a,#1e3a8a,#172554); }
         }
+
+        @keyframes spin { to { transform: rotate(360deg); } }
     </style>
 </head>
 <body class="antialiased">
@@ -212,8 +214,8 @@
 
             <form id="loginForm" onsubmit="handleLogin(event)" novalidate>
                 <div class="mb-4">
-                    <label class="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-2" for="adminUser">Username</label>
-                    <input id="adminUser" type="text" class="input-field" placeholder="admin username" autocomplete="username" spellcheck="false">
+                    <label class="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-2" for="adminUser">Email</label>
+                    <input id="adminUser" type="email" class="input-field" placeholder="admin@email.com" autocomplete="email" spellcheck="false">
                 </div>
                 <div class="mb-6">
                     <label class="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-2" for="adminPass">Password</label>
@@ -394,9 +396,8 @@
             <div class="mt-6 pt-5 border-t border-white/5">
                 <p class="text-xs text-gray-500 flex items-start gap-2">
                     <span class="material-symbols-outlined text-red-400 text-base mt-0.5 flex-shrink-0">warning</span>
-                    This admin panel uses a local session only. Credentials are never transmitted — all validation happens in your browser.
-                    Always access this page over HTTPS. This client-side gate deters casual access but is not a substitute for
-                    server-side authentication.
+                    This admin panel uses Firebase Authentication. Credentials are verified server-side by Firebase — only registered admin users with a verified <code class="text-red-300">admins/{uid}.isAdmin</code> Firestore entry are granted access.
+                    Always access this page over HTTPS.
                 </p>
             </div>
         </div>
@@ -427,47 +428,98 @@
 
 </div><!-- /adminDashboard -->
 
+<!-- ── Firebase SDKs ────────────────────────────────────────────── -->
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+
 <!-- ── Scripts ──────────────────────────────────────────────────── -->
 <script>
-    // ── Credentials (client-side gate — for team internal use only) ──
-    // NOTE: This is a lightweight, client-side access deterrent for a static
-    // site with no backend. It discourages casual/accidental access but is NOT
-    // cryptographically secure. Do not store truly secret values here.
-    // For production admin access, use Firebase Authentication directly.
-    const ADMIN_USER = 'azadmin';
-    const ADMIN_PASS = 'AZgpa2026!';
-    const SESSION_KEY = 'az_admin_auth';
+    // ── Firebase configuration (from research page) ──
+    const firebaseConfig = {
+        apiKey:            "AIzaSyC6TEAa2RLAKOnUXyZd5P1VqMWSRErBWoM",
+        authDomain:        "az-gpa-calculator-d9990.firebaseapp.com",
+        projectId:         "az-gpa-calculator-d9990",
+        storageBucket:     "az-gpa-calculator-d9990.firebasestorage.app",
+        messagingSenderId: "884817024451",
+        appId:             "1:884817024451:web:98b70e71483ddda22e9976",
+        measurementId:     "G-K577QWXKGS"
+    };
 
-    // ── Init: check existing session ──
-    (function init() {
-        if (sessionStorage.getItem(SESSION_KEY) === 'true') showDashboard();
-    })();
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db   = firebase.firestore();
 
-    function handleLogin(e) {
+    // ── Auth state observer — handles persistent login across page loads ──
+    auth.onAuthStateChanged(async function(user) {
+        if (user) {
+            try {
+                const doc = await db.collection('admins').doc(user.uid).get();
+                if (doc.exists && doc.data().isAdmin === true) {
+                    showDashboard(user);
+                } else {
+                    await auth.signOut();
+                    showLoginError('\u2715 &nbsp;Access denied. You are not an authorised administrator.');
+                }
+            } catch (err) {
+                await auth.signOut();
+                showLoginError('\u2715 &nbsp;Could not verify admin role. Please try again.');
+            }
+        }
+    });
+
+    async function handleLogin(e) {
         e.preventDefault();
-        const user = document.getElementById('adminUser').value.trim();
-        const pass = document.getElementById('adminPass').value;
+        const email    = document.getElementById('adminUser').value.trim();
+        const pass     = document.getElementById('adminPass').value;
         const errorBox = document.getElementById('loginError');
         const card     = document.getElementById('loginCard');
+        const btn      = document.querySelector('#loginForm .btn-primary');
 
-        if (user === ADMIN_USER && pass === ADMIN_PASS) {
-            sessionStorage.setItem(SESSION_KEY, 'true');
-            errorBox.classList.add('hidden');
-            showDashboard();
-        } else {
-            // Show error + shake animation
-            errorBox.classList.remove('hidden');
+        errorBox.classList.add('hidden');
+        btn.disabled = true;
+        btn.innerHTML = '<span class="material-symbols-outlined text-lg" style="animation:spin 1s linear infinite">progress_activity</span> Signing in\u2026';
+
+        try {
+            await auth.signInWithEmailAndPassword(email, pass);
+            // onAuthStateChanged handles showing the dashboard
+        } catch (err) {
+            showLoginError(getFirebaseError(err.code));
             card.classList.remove('shake');
             void card.offsetWidth; // reflow
             card.classList.add('shake');
             document.getElementById('adminPass').value = '';
             document.getElementById('adminUser').classList.add('error');
             document.getElementById('adminPass').classList.add('error');
+        } finally {
+            btn.disabled = false;
+            btn.innerHTML = '<span class="material-symbols-outlined text-lg">login</span> Sign In to Admin';
         }
     }
 
-    function handleLogout() {
-        sessionStorage.removeItem(SESSION_KEY);
+    function getFirebaseError(code) {
+        switch (code) {
+            case 'auth/user-not-found':
+            case 'auth/wrong-password':
+            case 'auth/invalid-credential':
+                return '\u2715 &nbsp;Invalid email or password. Please try again.';
+            case 'auth/invalid-email':
+                return '\u2715 &nbsp;Please enter a valid email address.';
+            case 'auth/too-many-requests':
+                return '\u2715 &nbsp;Too many failed attempts. Please try again later.';
+            default:
+                return '\u2715 &nbsp;Sign-in failed. Please try again.';
+        }
+    }
+
+    function showLoginError(msg) {
+        const errorBox = document.getElementById('loginError');
+        errorBox.innerHTML = msg;
+        errorBox.classList.remove('hidden');
+    }
+
+    async function handleLogout() {
+        await auth.signOut();
         document.getElementById('adminDashboard').classList.add('hidden');
         document.getElementById('loginGate').classList.remove('hidden');
         document.getElementById('adminUser').value = '';
@@ -478,19 +530,19 @@
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    function showDashboard() {
+    function showDashboard(user) {
         document.getElementById('loginGate').classList.add('hidden');
         document.getElementById('adminDashboard').classList.remove('hidden');
-        populateCredentials();
+        populateCredentials(user);
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    function populateCredentials() {
+    function populateCredentials(user) {
         const items = [
-            { label: 'Admin Email',       value: 'pwavwef\u0040gmail.com',   color: 'blue'   },
-            { label: 'Firebase Project',  value: 'az-gpa-calculator',        color: 'green'  },
-            { label: 'Measurement ID',    value: 'G-K577QWXKGS',             color: 'purple' },
-            { label: 'Admin Role Field',  value: 'admins/{uid}.isAdmin',     color: 'orange' },
+            { label: 'Admin Email',       value: user ? user.email : '\u2014',      color: 'blue'   },
+            { label: 'Firebase Project',  value: firebaseConfig.projectId,           color: 'green'  },
+            { label: 'Measurement ID',    value: firebaseConfig.measurementId,       color: 'purple' },
+            { label: 'Admin Role Field',  value: 'admins/{uid}.isAdmin',             color: 'orange' },
         ];
         const grid = document.getElementById('credentialsGrid');
         grid.innerHTML = items.map(({ label, value, color }) => `
