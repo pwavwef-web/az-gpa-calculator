@@ -8,6 +8,8 @@
     <title>AZ GPA Calculator | Admin</title>
     <link rel="icon" type="image/png" href="https://pwavwef-web.github.io/favicon1.png">
 
+    <script src="https://www.gstatic.com/firebasejs/10.14.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.14.0/firebase-auth-compat.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
@@ -207,24 +209,24 @@
         <div id="loginCard" class="glass-panel rounded-3xl p-8 border border-orange-500/15">
 
             <div id="loginError" class="hidden mb-4 px-4 py-3 rounded-xl bg-red-500/10 border border-red-500/25 text-red-400 text-sm font-semibold text-center">
-                ✕ &nbsp;Invalid username or password. Please try again.
+                ✕ &nbsp;Invalid email or password. Please try again.
             </div>
 
             <form id="loginForm" onsubmit="handleLogin(event)" novalidate>
                 <div class="mb-4">
-                    <label class="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-2" for="adminUser">Username</label>
-                    <input id="adminUser" type="text" class="input-field" placeholder="admin username" autocomplete="username" spellcheck="false">
+                    <label class="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-2" for="adminEmail">Email</label>
+                    <input id="adminEmail" type="email" class="input-field" placeholder="admin@example.com" autocomplete="email" spellcheck="false" required>
                 </div>
                 <div class="mb-6">
                     <label class="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-2" for="adminPass">Password</label>
                     <div class="relative">
-                        <input id="adminPass" type="password" class="input-field pr-12" placeholder="••••••••" autocomplete="current-password">
+                        <input id="adminPass" type="password" class="input-field pr-12" placeholder="••••••••" autocomplete="current-password" required>
                         <button type="button" onclick="togglePass()" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-300 transition">
                             <span id="eyeIcon" class="material-symbols-outlined text-xl">visibility</span>
                         </button>
                     </div>
                 </div>
-                <button type="submit" class="btn-primary flex items-center justify-center gap-2">
+                <button type="submit" id="loginBtn" class="btn-primary flex items-center justify-center gap-2">
                     <span class="material-symbols-outlined text-lg">login</span>
                     Sign In to Admin
                 </button>
@@ -393,10 +395,10 @@
 
             <div class="mt-6 pt-5 border-t border-white/5">
                 <p class="text-xs text-gray-500 flex items-start gap-2">
-                    <span class="material-symbols-outlined text-red-400 text-base mt-0.5 flex-shrink-0">warning</span>
-                    This admin panel uses a local session only. Credentials are never transmitted — all validation happens in your browser.
-                    Always access this page over HTTPS. This client-side gate deters casual access but is not a substitute for
-                    server-side authentication.
+                    <span class="material-symbols-outlined text-green-400 text-base mt-0.5 flex-shrink-0">verified_user</span>
+                    This admin panel is protected by Firebase Authentication (Email/Password).
+                    Credentials are verified server-side by Firebase — no passwords are stored in this page.
+                    Always access this page over HTTPS.
                 </p>
             </div>
         </div>
@@ -429,68 +431,86 @@
 
 <!-- ── Scripts ──────────────────────────────────────────────────── -->
 <script>
-    // ── Credentials (client-side gate — for team internal use only) ──
-    // NOTE: This is a lightweight, client-side access deterrent for a static
-    // site with no backend. It discourages casual/accidental access but is NOT
-    // cryptographically secure. Do not store truly secret values here.
-    // For production admin access, use Firebase Authentication directly.
-    const ADMIN_USER = 'azadmin';
-    const ADMIN_PASS = 'AZgpa2026!';
-    const SESSION_KEY = 'az_admin_auth';
+    // ── Firebase configuration (from research.html) ──
+    // NOTE: Firebase API keys are designed to be included in client-side code.
+    // Access is controlled by Firebase Security Rules and Auth restrictions in the Firebase Console.
+    const firebaseConfig = {
+        apiKey:            "AIzaSyC6TEAa2RLAKOnUXyZd5P1VqMWSRErBWoM",
+        authDomain:        "az-gpa-calculator-d9990.firebaseapp.com",
+        projectId:         "az-gpa-calculator-d9990",
+        storageBucket:     "az-gpa-calculator-d9990.firebasestorage.app",
+        messagingSenderId: "884817024451",
+        appId:             "1:884817024451:web:98b70e71483ddda22e9976",
+        measurementId:     "G-K577QWXKGS"
+    };
 
-    // ── Init: check existing session ──
-    (function init() {
-        if (sessionStorage.getItem(SESSION_KEY) === 'true') showDashboard();
-    })();
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+
+    // ── Init: listen for auth state changes ──
+    auth.onAuthStateChanged(function(user) {
+        if (user) {
+            showDashboard(user);
+        } else {
+            document.getElementById('adminDashboard').classList.add('hidden');
+            document.getElementById('loginGate').classList.remove('hidden');
+        }
+    });
 
     function handleLogin(e) {
         e.preventDefault();
-        const user = document.getElementById('adminUser').value.trim();
-        const pass = document.getElementById('adminPass').value;
+        const email    = document.getElementById('adminEmail').value.trim();
+        const pass     = document.getElementById('adminPass').value;
         const errorBox = document.getElementById('loginError');
         const card     = document.getElementById('loginCard');
+        const btn      = document.getElementById('loginBtn');
 
-        if (user === ADMIN_USER && pass === ADMIN_PASS) {
-            sessionStorage.setItem(SESSION_KEY, 'true');
-            errorBox.classList.add('hidden');
-            showDashboard();
-        } else {
-            // Show error + shake animation
-            errorBox.classList.remove('hidden');
-            card.classList.remove('shake');
-            void card.offsetWidth; // reflow
-            card.classList.add('shake');
-            document.getElementById('adminPass').value = '';
-            document.getElementById('adminUser').classList.add('error');
-            document.getElementById('adminPass').classList.add('error');
-        }
+        btn.disabled = true;
+        btn.innerHTML = '<span class="material-symbols-outlined text-lg">hourglass_top</span> Signing in…';
+        errorBox.classList.add('hidden');
+
+        auth.signInWithEmailAndPassword(email, pass)
+            .catch(function(error) {
+                console.warn('Firebase Auth error:', error.code);
+                btn.disabled = false;
+                btn.innerHTML = '<span class="material-symbols-outlined text-lg">login</span> Sign In to Admin';
+                errorBox.classList.remove('hidden');
+                card.classList.remove('shake');
+                void card.offsetWidth; // reflow
+                card.classList.add('shake');
+                document.getElementById('adminPass').value = '';
+                document.getElementById('adminEmail').classList.add('error');
+                document.getElementById('adminPass').classList.add('error');
+            });
     }
 
     function handleLogout() {
-        sessionStorage.removeItem(SESSION_KEY);
-        document.getElementById('adminDashboard').classList.add('hidden');
-        document.getElementById('loginGate').classList.remove('hidden');
-        document.getElementById('adminUser').value = '';
-        document.getElementById('adminPass').value = '';
-        document.getElementById('loginError').classList.add('hidden');
-        document.getElementById('adminUser').classList.remove('error');
-        document.getElementById('adminPass').classList.remove('error');
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+        auth.signOut().then(function() {
+            document.getElementById('adminDashboard').classList.add('hidden');
+            document.getElementById('loginGate').classList.remove('hidden');
+            document.getElementById('adminEmail').value = '';
+            document.getElementById('adminPass').value = '';
+            document.getElementById('loginError').classList.add('hidden');
+            document.getElementById('adminEmail').classList.remove('error');
+            document.getElementById('adminPass').classList.remove('error');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
     }
 
-    function showDashboard() {
+    function showDashboard(user) {
         document.getElementById('loginGate').classList.add('hidden');
         document.getElementById('adminDashboard').classList.remove('hidden');
-        populateCredentials();
+        populateCredentials(user);
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    function populateCredentials() {
+    function populateCredentials(user) {
+        const email = user ? user.email : '';
         const items = [
-            { label: 'Admin Email',       value: 'pwavwef\u0040gmail.com',   color: 'blue'   },
-            { label: 'Firebase Project',  value: 'az-gpa-calculator',        color: 'green'  },
-            { label: 'Measurement ID',    value: 'G-K577QWXKGS',             color: 'purple' },
-            { label: 'Admin Role Field',  value: 'admins/{uid}.isAdmin',     color: 'orange' },
+            { label: 'Signed In As',      value: email,                          color: 'blue'   },
+            { label: 'Firebase Project',  value: 'az-gpa-calculator-d9990',      color: 'green'  },
+            { label: 'Measurement ID',    value: 'G-K577QWXKGS',                 color: 'purple' },
+            { label: 'Admin Role Field',  value: 'admins/{uid}.isAdmin',          color: 'orange' },
         ];
         const grid = document.getElementById('credentialsGrid');
         grid.innerHTML = items.map(({ label, value, color }) => `
@@ -513,7 +533,7 @@
     }
 
     // Clear error styling on input
-    ['adminUser','adminPass'].forEach(id => {
+    ['adminEmail','adminPass'].forEach(id => {
         document.getElementById(id).addEventListener('input', function() {
             this.classList.remove('error');
             document.getElementById('loginError').classList.add('hidden');
