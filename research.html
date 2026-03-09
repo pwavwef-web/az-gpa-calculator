@@ -163,6 +163,7 @@
                 <a href="team.html"       class="nav-link px-3 py-1">Team</a>
                 <a href="contracts.html"  class="nav-link px-3 py-1">Contracts</a>
                 <a href="research.html"   class="nav-link nav-active px-3 py-1">Research</a>
+                <a href="admin.html"      class="nav-link px-3 py-1">Admin</a>
                 <a href="https://azlearner.me/" target="_blank"
                    class="hidden sm:flex items-center gap-1 px-3 py-1 rounded-lg bg-blue-600 hover:bg-blue-500 text-white transition text-xs">
                     <span class="material-symbols-outlined text-base">open_in_new</span> AZ Learner
@@ -434,6 +435,134 @@ admins / <span class="code-str">{userUID}</span>
         </div>
     </section>
 
+    <!-- ── Research Procedure ───────────────────────────────── -->
+    <section class="max-w-4xl mx-auto px-6 pb-16">
+        <div class="text-center mb-10">
+            <span class="text-xs font-bold text-green-400 uppercase tracking-widest">Team Process</span>
+            <h2 class="text-3xl sm:text-4xl font-black mt-2 text-gradient">Research Procedure</h2>
+            <p class="text-gray-400 text-sm mt-3 max-w-xl mx-auto">
+                The step-by-step workflow the AZ GPA Calculator team follows from initial research through to feature delivery.
+                Follow this procedure to keep everyone aligned and the codebase stable.
+            </p>
+        </div>
+
+        <div class="flex flex-col gap-5">
+
+            <!-- Step 1 -->
+            <div class="step-item flex items-start gap-4">
+                <div class="step-num flex-shrink-0">1</div>
+                <div class="glass-card flex-1 rounded-2xl p-6 border border-blue-500/15">
+                    <h3 class="font-black text-white mb-1">Identify &amp; Document the Problem</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        Before writing any code, open a GitHub Issue describing the problem, the expected behaviour, and the
+                        acceptance criteria. Tag it with the appropriate label (<code class="text-blue-300 bg-blue-900/30 px-1 rounded text-xs">feature</code>,
+                        <code class="text-orange-300 bg-orange-900/30 px-1 rounded text-xs">bug</code>, or
+                        <code class="text-purple-300 bg-purple-900/30 px-1 rounded text-xs">research</code>) so the team can triage it in the weekly sync.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Step 2 -->
+            <div class="step-item flex items-start gap-4">
+                <div class="step-num flex-shrink-0">2</div>
+                <div class="glass-card flex-1 rounded-2xl p-6 border border-cyan-500/15">
+                    <h3 class="font-black text-white mb-1">Research &amp; Proof of Concept</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed mb-3">
+                        Each researcher spins up a throwaway Flutter project or Firebase sandbox to validate the approach.
+                        Document findings in the GitHub Issue comments with code snippets, screenshots, and benchmark numbers.
+                        If more than one approach is viable, record the trade-offs so the team can decide together.
+                    </p>
+                    <div class="code-block text-xs">
+<span class="code-comment"># suggested branch naming convention</span>
+<span class="code-kw">git</span> checkout -b <span class="code-str">research/&lt;issue-number&gt;-short-description</span>
+
+<span class="code-comment"># example</span>
+<span class="code-kw">git</span> checkout -b <span class="code-str">research/42-offline-gpa-cache</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 3 -->
+            <div class="step-item flex items-start gap-4">
+                <div class="step-num flex-shrink-0">3</div>
+                <div class="glass-card flex-1 rounded-2xl p-6 border border-purple-500/15">
+                    <h3 class="font-black text-white mb-1">Design Review</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        Share a Figma / wireframe link or an ASCII flow diagram in the Issue before implementation begins.
+                        At least one team member must approve the design.
+                        UX decisions affecting end-users must also be reviewed by the team lead (Francis).
+                    </p>
+                </div>
+            </div>
+
+            <!-- Step 4 -->
+            <div class="step-item flex items-start gap-4">
+                <div class="step-num flex-shrink-0">4</div>
+                <div class="glass-card flex-1 rounded-2xl p-6 border border-orange-500/15">
+                    <h3 class="font-black text-white mb-1">Implementation &amp; Code Review</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed mb-3">
+                        Open a Pull Request from a feature branch into <code class="text-blue-300 bg-blue-900/30 px-1 rounded text-xs">main</code>.
+                        The PR description must reference the Issue (<code class="text-green-300 bg-green-900/30 px-1 rounded text-xs">Closes #&lt;issue&gt;</code>),
+                        include a short summary of changes, and list any new dependencies.
+                        At least one reviewer must approve before merging.
+                    </p>
+                    <div class="code-block text-xs">
+<span class="code-comment"># commit message format</span>
+<span class="code-str">&lt;type&gt;</span>(<span class="code-key">scope</span>): <span class="code-val">short description</span>
+
+<span class="code-comment"># examples</span>
+<span class="code-fn">feat</span>(<span class="code-key">gpa</span>):    add CGPA trend chart widget
+<span class="code-fn">fix</span>(<span class="code-key">auth</span>):    handle Google sign-in cancellation gracefully
+<span class="code-fn">docs</span>(<span class="code-key">research</span>): add research procedure to web docs
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 5 -->
+            <div class="step-item flex items-start gap-4">
+                <div class="step-num flex-shrink-0">5</div>
+                <div class="glass-card flex-1 rounded-2xl p-6 border border-green-500/15">
+                    <h3 class="font-black text-white mb-1">Testing &amp; QA</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        Run the Flutter unit and widget test suite locally (<code class="text-blue-300 bg-blue-900/30 px-1 rounded text-xs">flutter test</code>)
+                        before pushing. All new business logic must be covered by at least one unit test.
+                        For features touching Firestore, run integration tests against the Firebase Emulator Suite.
+                        Document manual test steps in the PR for any UI changes.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Step 6 -->
+            <div class="step-item flex items-start gap-4">
+                <div class="step-num flex-shrink-0">6</div>
+                <div class="glass-card flex-1 rounded-2xl p-6 border border-blue-500/15">
+                    <h3 class="font-black text-white mb-1">Deployment &amp; Monitoring</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        After merging, the team lead publishes a new build via the Firebase App Distribution channel for
+                        internal beta testers. Monitor Firebase Crashlytics and Analytics (ID&nbsp;
+                        <code class="text-purple-300 bg-purple-900/30 px-1 rounded text-xs">G-K577QWXKGS</code>) for any regressions
+                        over the following 48 hours. Update the Idea &amp; Roadmap page to reflect the completed milestone.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Step 7 -->
+            <div class="flex items-start gap-4">
+                <div class="step-num flex-shrink-0">7</div>
+                <div class="glass-card flex-1 rounded-2xl p-6 border border-green-500/20">
+                    <h3 class="font-black text-white mb-1">Retrospective &amp; Documentation Update</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        Close the GitHub Issue and leave a comment summarising what was built, any known limitations, and
+                        follow-up action items. Update the relevant web documentation page (Research, Idea, or Contracts)
+                        to keep the team knowledge base current.
+                        A brief retrospective note in the weekly Slack/Discord thread ensures the whole team stays informed.
+                    </p>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
     <!-- ── Summary Cards ─────────────────────────────────────── -->
     <section class="max-w-4xl mx-auto px-6 pb-24">
         <div class="text-center mb-10">
@@ -478,6 +607,7 @@ admins / <span class="code-str">{userUID}</span>
                 <a href="team.html"      class="hover:text-white transition">Team</a>
                 <a href="contracts.html" class="hover:text-white transition">Contracts</a>
                 <a href="research.html"  class="hover:text-white transition">Research</a>
+                <a href="admin.html"     class="hover:text-white transition">Admin</a>
             </div>
         </div>
     </footer>
