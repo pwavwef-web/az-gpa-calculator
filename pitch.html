@@ -1,0 +1,935 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="AZ GPA Calculator – Pitch Deck. A Flutter-based predictive academic intelligence mobile application by AZ Learner.">
+    <meta name="author" content="Francis Pwavwe Production">
+    <title>AZ GPA Calculator | Pitch Deck</title>
+    <link rel="icon" type="image/png" href="https://pwavwef-web.github.io/favicon1.png">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+
+    <style>
+        :root {
+            --brand-blue: #3b82f6;
+            --brand-white: #ffffff;
+            --brand-orange: #FFAB40;
+        }
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #0f172a;
+            color: white;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+            -webkit-text-size-adjust: 100%;
+        }
+        *, *::before, *::after { box-sizing: border-box; }
+        html { overflow-x: hidden; }
+
+        .bg-animated {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: -2;
+            background: linear-gradient(-45deg, #020617, #0f172a, #1e3a8a, #172554);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+        }
+        @keyframes gradientBG {
+            0%   { background-position: 0% 50%; }
+            50%  { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .glass-panel {
+            background: rgba(255,255,255,0.03);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255,255,255,0.08);
+            box-shadow: 0 4px 30px rgba(0,0,0,0.1);
+        }
+        .glass-card {
+            background: rgba(255,255,255,0.03);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255,255,255,0.08);
+            transition: all 0.3s ease;
+        }
+        .glass-card:hover {
+            background: rgba(255,255,255,0.07);
+            border-color: rgba(255,255,255,0.2);
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+
+        .text-gradient {
+            background: linear-gradient(to right, #ffffff, #60a5fa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .text-gradient-orange {
+            background: linear-gradient(to right, #FFAB40, #ff6b00);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .text-gradient-green {
+            background: linear-gradient(to right, #4ade80, #22d3ee);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Slide dividers */
+        .slide-section {
+            position: relative;
+        }
+        .slide-section::before {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 4px;
+            background: linear-gradient(to right, #3b82f6, #06b6d4);
+            border-radius: 2px;
+            margin: 0 auto 20px;
+        }
+
+        /* Stat cards */
+        .stat-card {
+            background: linear-gradient(135deg, rgba(59,130,246,0.15), rgba(6,182,212,0.08));
+            border: 1px solid rgba(59,130,246,0.3);
+            border-radius: 16px;
+            padding: 24px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        .stat-card:hover {
+            border-color: rgba(59,130,246,0.6);
+            box-shadow: 0 0 30px rgba(59,130,246,0.15);
+            transform: translateY(-4px);
+        }
+
+        /* Feature icon chips */
+        .icon-chip {
+            width: 48px; height: 48px;
+            border-radius: 14px;
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0;
+        }
+        .icon-blue  { background: linear-gradient(135deg,#3b82f6,#06b6d4); }
+        .icon-orange{ background: linear-gradient(135deg,#FFAB40,#ff6b00); }
+        .icon-green { background: linear-gradient(135deg,#22c55e,#16a34a); }
+        .icon-purple{ background: linear-gradient(135deg,#a855f7,#7c3aed); }
+
+        /* Team avatar rings */
+        .avatar-ring {
+            padding: 3px;
+            background: linear-gradient(135deg, #3b82f6, #22d3ee);
+            border-radius: 50%;
+            display: inline-block;
+        }
+        .avatar-ceo {
+            padding: 3px;
+            background: linear-gradient(135deg, #FFAB40, #ff6b00);
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        /* Business model tier cards */
+        .tier-card {
+            border-radius: 20px;
+            padding: 28px 24px;
+            transition: all 0.3s ease;
+        }
+        .tier-free {
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .tier-premium {
+            background: linear-gradient(135deg, rgba(59,130,246,0.2), rgba(6,182,212,0.1));
+            border: 1px solid rgba(59,130,246,0.4);
+            box-shadow: 0 0 40px rgba(59,130,246,0.15);
+        }
+        .tier-enterprise {
+            background: linear-gradient(135deg, rgba(255,171,64,0.15), rgba(255,107,0,0.08));
+            border: 1px solid rgba(255,171,64,0.35);
+        }
+        .tier-card:hover {
+            transform: translateY(-6px);
+        }
+
+        /* Roadmap compact */
+        .mini-step {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .mini-icon {
+            width: 36px; height: 36px;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 13px; font-weight: 800;
+            flex-shrink: 0;
+        }
+
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #0f172a; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #475569; }
+
+        @media (prefers-reduced-motion: reduce) {
+            .bg-animated { animation: none; background: linear-gradient(-45deg,#020617,#0f172a,#1e3a8a,#172554); }
+        }
+
+        .nav-link { transition: color 0.2s; }
+        .nav-link:hover { color: #60a5fa; }
+        .nav-active { color: #60a5fa; border-bottom: 2px solid #3b82f6; }
+
+        @keyframes pulse-glow {
+            0%,100% { box-shadow: 0 0 0 0 rgba(59,130,246,0.5); }
+            50%      { box-shadow: 0 0 0 8px rgba(59,130,246,0); }
+        }
+        .pulse-badge { animation: pulse-glow 2s ease-in-out infinite; }
+
+        /* Progress bar animation */
+        @keyframes barGrow {
+            from { width: 0; }
+        }
+        .bar-animate { animation: barGrow 1.2s ease forwards; }
+    </style>
+</head>
+<body class="antialiased">
+
+    <div class="bg-animated"></div>
+
+    <!-- ── Navigation ─────────────────────────────────────────── -->
+    <nav class="fixed top-0 left-0 right-0 z-50 glass-panel px-6 py-4">
+        <div class="max-w-6xl mx-auto flex items-center justify-between">
+            <a href="index.html" class="flex items-center gap-3">
+                <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-400 flex items-center justify-center font-black text-sm">AZ</div>
+                <span class="font-bold text-sm tracking-wide hidden sm:block">GPA Calculator</span>
+            </a>
+            <div class="flex items-center gap-1 sm:gap-4 text-sm font-medium text-gray-300">
+                <a href="index.html"     class="nav-link px-3 py-1">Idea</a>
+                <a href="team.html"      class="nav-link px-3 py-1">Team</a>
+                <a href="contracts.html" class="nav-link px-3 py-1">Contracts</a>
+                <a href="research.html"  class="nav-link px-3 py-1">Research</a>
+                <a href="pitch.html"     class="nav-link nav-active px-3 py-1">Pitch</a>
+                <a href="admin.html"     class="nav-link px-3 py-1">Admin</a>
+                <a href="https://azlearner.me/" target="_blank"
+                   class="hidden sm:flex items-center gap-1 px-3 py-1 rounded-lg bg-blue-600 hover:bg-blue-500 text-white transition text-xs">
+                    <span class="material-symbols-outlined text-base">open_in_new</span> AZ Learner
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- SLIDE 1 · Cover                                        -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section class="min-h-screen flex flex-col items-center justify-center text-center px-6 pt-28 pb-16">
+        <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-panel text-xs font-semibold text-blue-300 mb-6 border border-blue-500/30">
+            <span class="material-symbols-outlined text-base">present_to_all</span>
+            Investor &amp; Partner Pitch Deck · 2026
+        </div>
+
+        <h1 class="text-5xl sm:text-7xl font-black mb-6 leading-tight">
+            <span class="text-gradient">AZ GPA</span><br>
+            <span class="text-white">Calculator</span>
+        </h1>
+
+        <p class="max-w-2xl text-gray-300 text-lg mb-4 leading-relaxed">
+            A <span class="text-blue-400 font-semibold">Flutter-based predictive academic intelligence</span> mobile application empowering Ghanaian university students to take control of their academic journey.
+        </p>
+        <p class="text-gray-400 text-sm mb-10">
+            By <span class="text-white font-semibold">Francis Pwavwe Production</span> &nbsp;·&nbsp; Under <span class="text-blue-400 font-semibold">AZ Learner</span> &nbsp;·&nbsp; Conceived <span class="text-white font-semibold">1st March, 2026</span>
+        </p>
+
+        <div class="flex flex-wrap gap-3 justify-center">
+            <a href="#problem" class="px-6 py-3 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-semibold transition text-sm flex items-center gap-2">
+                <span class="material-symbols-outlined text-base">slideshow</span> View Deck
+            </a>
+            <a href="mailto:pwavwef@gmail.com" class="px-6 py-3 rounded-xl glass-panel hover:bg-white/10 text-white font-semibold transition text-sm flex items-center gap-2 border border-white/10">
+                <span class="material-symbols-outlined text-base">mail</span> Contact Us
+            </a>
+        </div>
+
+        <!-- Scroll hint -->
+        <div class="mt-16 flex flex-col items-center gap-2 text-gray-600 text-xs animate-bounce">
+            <span class="material-symbols-outlined text-2xl">keyboard_arrow_down</span>
+            Scroll to explore
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- SLIDE 2 · Problem                                       -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="problem" class="max-w-6xl mx-auto px-6 pb-24">
+        <div class="text-center mb-14 slide-section">
+            <h2 class="text-3xl sm:text-5xl font-black text-gradient mb-3">The Problem</h2>
+            <p class="text-gray-400 max-w-xl mx-auto">Ghanaian university students face significant barriers to academic self-management.</p>
+        </div>
+
+        <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+            <div class="glass-card rounded-2xl p-6">
+                <div class="icon-chip icon-orange mb-4">
+                    <span class="material-symbols-outlined text-white text-xl">quiz</span>
+                </div>
+                <h3 class="font-bold text-white mb-2">No Accurate Tracking</h3>
+                <p class="text-gray-400 text-sm leading-relaxed">Students lack reliable tools to calculate and monitor their cumulative GPA across semesters.</p>
+            </div>
+            <div class="glass-card rounded-2xl p-6">
+                <div class="icon-chip icon-orange mb-4">
+                    <span class="material-symbols-outlined text-white text-xl">wifi_off</span>
+                </div>
+                <h3 class="font-bold text-white mb-2">Unreliable Internet</h3>
+                <p class="text-gray-400 text-sm leading-relaxed">Campus connectivity is inconsistent, making cloud-dependent solutions impractical for everyday use.</p>
+            </div>
+            <div class="glass-card rounded-2xl p-6">
+                <div class="icon-chip icon-orange mb-4">
+                    <span class="material-symbols-outlined text-white text-xl">psychology_alt</span>
+                </div>
+                <h3 class="font-bold text-white mb-2">No Predictive Guidance</h3>
+                <p class="text-gray-400 text-sm leading-relaxed">Students cannot forecast how current performance will affect their final GPA or graduation standing.</p>
+            </div>
+            <div class="glass-card rounded-2xl p-6">
+                <div class="icon-chip icon-orange mb-4">
+                    <span class="material-symbols-outlined text-white text-xl">event_busy</span>
+                </div>
+                <h3 class="font-bold text-white mb-2">No Scenario Planning</h3>
+                <p class="text-gray-400 text-sm leading-relaxed">There is no easy way to simulate "what-if" grade scenarios to plan study priorities effectively.</p>
+            </div>
+        </div>
+
+        <!-- Pain point highlight -->
+        <div class="mt-10 glass-card rounded-2xl p-6 border border-orange-500/20 bg-gradient-to-r from-orange-500/5 to-transparent">
+            <div class="flex items-start gap-4">
+                <div class="icon-chip icon-orange flex-shrink-0">
+                    <span class="material-symbols-outlined text-white text-xl">warning</span>
+                </div>
+                <div>
+                    <h3 class="font-bold text-white mb-1">The Result?</h3>
+                    <p class="text-gray-300 text-sm leading-relaxed">Students are left guessing their academic standing, unable to make informed decisions about course loads, retakes, or graduation timelines — leading to preventable academic setbacks and stress.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- SLIDE 3 · Solution                                      -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="solution" class="max-w-6xl mx-auto px-6 pb-24">
+        <div class="text-center mb-14 slide-section">
+            <h2 class="text-3xl sm:text-5xl font-black text-gradient mb-3">Our Solution</h2>
+            <p class="text-gray-400 max-w-xl mx-auto">AZ GPA Calculator is an all-in-one academic intelligence tool built specifically for the Ghanaian student context.</p>
+        </div>
+
+        <div class="grid md:grid-cols-3 gap-6 mb-10">
+            <div class="glass-card rounded-2xl p-6">
+                <div class="icon-chip icon-blue mb-4">
+                    <span class="material-symbols-outlined text-white text-xl">calculate</span>
+                </div>
+                <h3 class="font-bold text-white mb-2">Accurate GPA Engine</h3>
+                <p class="text-gray-400 text-sm leading-relaxed">Precise semester and cumulative GPA calculation following Ghanaian university grading standards.</p>
+            </div>
+            <div class="glass-card rounded-2xl p-6">
+                <div class="icon-chip icon-blue mb-4">
+                    <span class="material-symbols-outlined text-white text-xl">trending_up</span>
+                </div>
+                <h3 class="font-bold text-white mb-2">GPA Forecasting</h3>
+                <p class="text-gray-400 text-sm leading-relaxed">Predict final GPA outcomes based on current performance trajectories across all enrolled courses.</p>
+            </div>
+            <div class="glass-card rounded-2xl p-6">
+                <div class="icon-chip icon-blue mb-4">
+                    <span class="material-symbols-outlined text-white text-xl">storage</span>
+                </div>
+                <h3 class="font-bold text-white mb-2">Persistent Storage</h3>
+                <p class="text-gray-400 text-sm leading-relaxed">Save and access semester-by-semester records locally — no account required, no data loss.</p>
+            </div>
+            <div class="glass-card rounded-2xl p-6">
+                <div class="icon-chip icon-green mb-4">
+                    <span class="material-symbols-outlined text-white text-xl">science</span>
+                </div>
+                <h3 class="font-bold text-white mb-2">What-If Simulation</h3>
+                <p class="text-gray-400 text-sm leading-relaxed">Simulate grade scenarios to understand the impact of different outcomes before exams.</p>
+            </div>
+            <div class="glass-card rounded-2xl p-6">
+                <div class="icon-chip icon-green mb-4">
+                    <span class="material-symbols-outlined text-white text-xl">smart_toy</span>
+                </div>
+                <h3 class="font-bold text-white mb-2">AI Advisory</h3>
+                <p class="text-gray-400 text-sm leading-relaxed">Personalised AI-powered academic advice and optimisation suggestions based on student data.</p>
+            </div>
+            <div class="glass-card rounded-2xl p-6">
+                <div class="icon-chip icon-green mb-4">
+                    <span class="material-symbols-outlined text-white text-xl">wifi_off</span>
+                </div>
+                <h3 class="font-bold text-white mb-2">Offline-First Design</h3>
+                <p class="text-gray-400 text-sm leading-relaxed">Fully functional without internet — built from the ground up for Africa's connectivity reality.</p>
+            </div>
+        </div>
+
+        <!-- Solution tagline -->
+        <div class="glass-card rounded-2xl p-6 border border-blue-500/20 bg-gradient-to-r from-blue-500/5 to-cyan-500/5 text-center">
+            <p class="text-lg font-semibold text-white leading-relaxed">
+                "One app that gives every Ghanaian university student the academic clarity and confidence they deserve — regardless of connectivity."
+            </p>
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- SLIDE 4 · Market Opportunity                            -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="market" class="max-w-6xl mx-auto px-6 pb-24">
+        <div class="text-center mb-14 slide-section">
+            <h2 class="text-3xl sm:text-5xl font-black text-gradient mb-3">Market Opportunity</h2>
+            <p class="text-gray-400 max-w-xl mx-auto">A large, underserved student population with growing smartphone adoption.</p>
+        </div>
+
+        <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-10">
+            <div class="stat-card">
+                <div class="text-4xl font-black text-gradient-green mb-2">400K+</div>
+                <div class="text-white font-semibold text-sm mb-1">University Students</div>
+                <div class="text-gray-400 text-xs">Enrolled across Ghana's accredited tertiary institutions</div>
+            </div>
+            <div class="stat-card">
+                <div class="text-4xl font-black text-gradient-green mb-2">200+</div>
+                <div class="text-white font-semibold text-sm mb-1">Universities &amp; Colleges</div>
+                <div class="text-gray-400 text-xs">Public and private accredited institutions in Ghana</div>
+            </div>
+            <div class="stat-card">
+                <div class="text-4xl font-black text-gradient-green mb-2">70%+</div>
+                <div class="text-white font-semibold text-sm mb-1">Smartphone Penetration</div>
+                <div class="text-gray-400 text-xs">Among Ghanaian university-age students</div>
+            </div>
+            <div class="stat-card">
+                <div class="text-4xl font-black text-gradient-green mb-2">$0</div>
+                <div class="text-white font-semibold text-sm mb-1">Direct Competitors</div>
+                <div class="text-gray-400 text-xs">No offline-first GPA tool built for the Ghanaian context exists today</div>
+            </div>
+        </div>
+
+        <!-- Market growth -->
+        <div class="glass-card rounded-2xl p-8">
+            <h3 class="font-bold text-white text-lg mb-6 text-center">Why Now?</h3>
+            <div class="grid md:grid-cols-3 gap-6">
+                <div class="flex items-start gap-3">
+                    <div class="icon-chip icon-blue flex-shrink-0" style="width:40px;height:40px;">
+                        <span class="material-symbols-outlined text-white" style="font-size:18px;">school</span>
+                    </div>
+                    <div>
+                        <div class="font-semibold text-white text-sm mb-1">Rapid Enrolment Growth</div>
+                        <p class="text-gray-400 text-xs leading-relaxed">Ghana's tertiary enrolment has grown over 200% in the past decade, with more first-generation students needing academic support tools.</p>
+                    </div>
+                </div>
+                <div class="flex items-start gap-3">
+                    <div class="icon-chip icon-green flex-shrink-0" style="width:40px;height:40px;">
+                        <span class="material-symbols-outlined text-white" style="font-size:18px;">smartphone</span>
+                    </div>
+                    <div>
+                        <div class="font-semibold text-white text-sm mb-1">Mobile-First Generation</div>
+                        <p class="text-gray-400 text-xs leading-relaxed">Students primarily access information and tools via mobile. A Flutter app targets both Android and iOS from a single codebase.</p>
+                    </div>
+                </div>
+                <div class="flex items-start gap-3">
+                    <div class="icon-chip icon-purple flex-shrink-0" style="width:40px;height:40px;">
+                        <span class="material-symbols-outlined text-white" style="font-size:18px;">expand</span>
+                    </div>
+                    <div>
+                        <div class="font-semibold text-white text-sm mb-1">Pan-African Expansion</div>
+                        <p class="text-gray-400 text-xs leading-relaxed">The offline-first model is directly applicable to Nigeria, Kenya, and other African markets facing similar connectivity challenges.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- SLIDE 5 · Product & Key Features                        -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="features" class="max-w-6xl mx-auto px-6 pb-24">
+        <div class="text-center mb-14 slide-section">
+            <h2 class="text-3xl sm:text-5xl font-black text-gradient mb-3">The Product</h2>
+            <p class="text-gray-400 max-w-xl mx-auto">Built with Flutter for cross-platform delivery. Designed for performance, clarity, and long-term use.</p>
+        </div>
+
+        <!-- Tech stack -->
+        <div class="grid sm:grid-cols-3 gap-4 mb-10">
+            <div class="glass-card rounded-2xl p-5 flex items-center gap-4">
+                <div class="icon-chip icon-blue flex-shrink-0">
+                    <span class="material-symbols-outlined text-white text-xl">flutter_dash</span>
+                </div>
+                <div>
+                    <div class="font-bold text-white text-sm">Flutter</div>
+                    <div class="text-gray-400 text-xs">Cross-platform: Android &amp; iOS from one codebase</div>
+                </div>
+            </div>
+            <div class="glass-card rounded-2xl p-5 flex items-center gap-4">
+                <div class="icon-chip icon-green flex-shrink-0">
+                    <span class="material-symbols-outlined text-white text-xl">database</span>
+                </div>
+                <div>
+                    <div class="font-bold text-white text-sm">Local Storage</div>
+                    <div class="text-gray-400 text-xs">Hive / SQLite for offline-first data persistence</div>
+                </div>
+            </div>
+            <div class="glass-card rounded-2xl p-5 flex items-center gap-4">
+                <div class="icon-chip icon-purple flex-shrink-0">
+                    <span class="material-symbols-outlined text-white text-xl">cloud_sync</span>
+                </div>
+                <div>
+                    <div class="font-bold text-white text-sm">Firebase (Optional)</div>
+                    <div class="text-gray-400 text-xs">Cloud backup &amp; sync when connectivity is available</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Core feature breakdown -->
+        <div class="glass-card rounded-2xl p-8">
+            <h3 class="font-bold text-white text-lg mb-6">Core Capabilities</h3>
+            <div class="space-y-4">
+                <div>
+                    <div class="flex justify-between text-sm mb-1">
+                        <span class="text-white font-medium flex items-center gap-2"><span class="material-symbols-outlined text-blue-400 text-base">calculate</span> GPA Calculation Accuracy</span>
+                        <span class="text-blue-400 font-bold">100%</span>
+                    </div>
+                    <div class="h-2 rounded-full bg-white/10">
+                        <div class="h-2 rounded-full bg-gradient-to-r from-blue-500 to-cyan-400 bar-animate" style="width:100%"></div>
+                    </div>
+                </div>
+                <div>
+                    <div class="flex justify-between text-sm mb-1">
+                        <span class="text-white font-medium flex items-center gap-2"><span class="material-symbols-outlined text-green-400 text-base">wifi_off</span> Offline Functionality</span>
+                        <span class="text-green-400 font-bold">100%</span>
+                    </div>
+                    <div class="h-2 rounded-full bg-white/10">
+                        <div class="h-2 rounded-full bg-gradient-to-r from-green-500 to-emerald-400 bar-animate" style="width:100%"></div>
+                    </div>
+                </div>
+                <div>
+                    <div class="flex justify-between text-sm mb-1">
+                        <span class="text-white font-medium flex items-center gap-2"><span class="material-symbols-outlined text-purple-400 text-base">smart_toy</span> AI Advisory Integration</span>
+                        <span class="text-purple-400 font-bold">Planned</span>
+                    </div>
+                    <div class="h-2 rounded-full bg-white/10">
+                        <div class="h-2 rounded-full bg-gradient-to-r from-purple-500 to-violet-400 bar-animate" style="width:60%"></div>
+                    </div>
+                </div>
+                <div>
+                    <div class="flex justify-between text-sm mb-1">
+                        <span class="text-white font-medium flex items-center gap-2"><span class="material-symbols-outlined text-cyan-400 text-base">cloud_sync</span> Cloud Sync</span>
+                        <span class="text-cyan-400 font-bold">Optional</span>
+                    </div>
+                    <div class="h-2 rounded-full bg-white/10">
+                        <div class="h-2 rounded-full bg-gradient-to-r from-cyan-500 to-teal-400 bar-animate" style="width:45%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- SLIDE 6 · Business Model                               -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="business" class="max-w-6xl mx-auto px-6 pb-24">
+        <div class="text-center mb-14 slide-section">
+            <h2 class="text-3xl sm:text-5xl font-black text-gradient mb-3">Business Model</h2>
+            <p class="text-gray-400 max-w-xl mx-auto">A freemium model balancing accessibility for students with sustainable long-term revenue.</p>
+        </div>
+
+        <div class="grid md:grid-cols-3 gap-6">
+            <!-- Free Tier -->
+            <div class="tier-card tier-free">
+                <div class="text-center mb-6">
+                    <div class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-white/10 mb-3">
+                        <span class="material-symbols-outlined text-white text-xl">person</span>
+                    </div>
+                    <h3 class="font-black text-white text-xl">Free</h3>
+                    <div class="text-gray-400 text-sm mt-1">Forever free tier</div>
+                    <div class="text-3xl font-black text-white mt-4">GHS 0<span class="text-base font-normal text-gray-400">/mo</span></div>
+                </div>
+                <ul class="space-y-3 text-sm text-gray-300">
+                    <li class="flex items-center gap-2"><span class="material-symbols-outlined text-green-400 text-base">check_circle</span> GPA calculation</li>
+                    <li class="flex items-center gap-2"><span class="material-symbols-outlined text-green-400 text-base">check_circle</span> Up to 3 semesters stored</li>
+                    <li class="flex items-center gap-2"><span class="material-symbols-outlined text-green-400 text-base">check_circle</span> Basic what-if simulation</li>
+                    <li class="flex items-center gap-2"><span class="material-symbols-outlined text-gray-600 text-base">cancel</span> GPA forecasting</li>
+                    <li class="flex items-center gap-2"><span class="material-symbols-outlined text-gray-600 text-base">cancel</span> AI advisory</li>
+                    <li class="flex items-center gap-2"><span class="material-symbols-outlined text-gray-600 text-base">cancel</span> Cloud backup</li>
+                </ul>
+            </div>
+
+            <!-- Premium Tier -->
+            <div class="tier-card tier-premium">
+                <div class="text-center mb-6">
+                    <div class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/30 mb-3 relative">
+                        <span class="material-symbols-outlined text-blue-300 text-xl">star</span>
+                        <div class="absolute -top-2 -right-2 bg-blue-500 text-white text-xs font-bold px-2 py-0.5 rounded-full pulse-badge">Popular</div>
+                    </div>
+                    <h3 class="font-black text-white text-xl">Premium</h3>
+                    <div class="text-blue-300 text-sm mt-1">For serious students</div>
+                    <div class="text-3xl font-black text-white mt-4">GHS 20<span class="text-base font-normal text-gray-400">/mo</span></div>
+                </div>
+                <ul class="space-y-3 text-sm text-gray-300">
+                    <li class="flex items-center gap-2"><span class="material-symbols-outlined text-green-400 text-base">check_circle</span> Everything in Free</li>
+                    <li class="flex items-center gap-2"><span class="material-symbols-outlined text-green-400 text-base">check_circle</span> Unlimited semesters</li>
+                    <li class="flex items-center gap-2"><span class="material-symbols-outlined text-green-400 text-base">check_circle</span> Advanced GPA forecasting</li>
+                    <li class="flex items-center gap-2"><span class="material-symbols-outlined text-green-400 text-base">check_circle</span> AI academic advisory</li>
+                    <li class="flex items-center gap-2"><span class="material-symbols-outlined text-green-400 text-base">check_circle</span> Cloud backup &amp; sync</li>
+                    <li class="flex items-center gap-2"><span class="material-symbols-outlined text-green-400 text-base">check_circle</span> Export to PDF</li>
+                </ul>
+            </div>
+
+            <!-- Enterprise Tier -->
+            <div class="tier-card tier-enterprise">
+                <div class="text-center mb-6">
+                    <div class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-orange-500/20 mb-3">
+                        <span class="material-symbols-outlined text-orange-300 text-xl">school</span>
+                    </div>
+                    <h3 class="font-black text-white text-xl">Institution</h3>
+                    <div class="text-orange-300 text-sm mt-1">University licensing</div>
+                    <div class="text-3xl font-black text-white mt-4">Custom</div>
+                </div>
+                <ul class="space-y-3 text-sm text-gray-300">
+                    <li class="flex items-center gap-2"><span class="material-symbols-outlined text-green-400 text-base">check_circle</span> Campus-wide deployment</li>
+                    <li class="flex items-center gap-2"><span class="material-symbols-outlined text-green-400 text-base">check_circle</span> Admin dashboard</li>
+                    <li class="flex items-center gap-2"><span class="material-symbols-outlined text-green-400 text-base">check_circle</span> Custom grading scales</li>
+                    <li class="flex items-center gap-2"><span class="material-symbols-outlined text-green-400 text-base">check_circle</span> Analytics &amp; reporting</li>
+                    <li class="flex items-center gap-2"><span class="material-symbols-outlined text-green-400 text-base">check_circle</span> White-label option</li>
+                    <li class="flex items-center gap-2"><span class="material-symbols-outlined text-green-400 text-base">check_circle</span> Priority support</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Revenue projections note -->
+        <div class="mt-8 glass-card rounded-2xl p-5 flex items-start gap-4">
+            <div class="icon-chip icon-green flex-shrink-0">
+                <span class="material-symbols-outlined text-white text-xl">insights</span>
+            </div>
+            <div>
+                <h4 class="font-bold text-white mb-1">Revenue Potential</h4>
+                <p class="text-gray-400 text-sm leading-relaxed">With just 5% of Ghana's 400K+ university students adopting the Premium tier at GHS 20/month, that represents <span class="text-green-400 font-semibold">GHS 400,000+ monthly recurring revenue</span>. Institutional licensing adds a high-margin B2B revenue stream with strong retention.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- SLIDE 7 · Team                                          -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="team" class="max-w-6xl mx-auto px-6 pb-24">
+        <div class="text-center mb-14 slide-section">
+            <h2 class="text-3xl sm:text-5xl font-black text-gradient mb-3">The Team</h2>
+            <p class="text-gray-400 max-w-xl mx-auto">Passionate, driven individuals building for their own community.</p>
+        </div>
+
+        <!-- CEO -->
+        <div class="flex justify-center mb-8">
+            <div class="glass-card rounded-2xl p-8 max-w-sm w-full text-center">
+                <div class="avatar-ceo inline-block mb-4">
+                    <img src="francis.jpg" alt="Francis Pwavwe" class="w-20 h-20 rounded-full object-cover">
+                </div>
+                <h3 class="font-black text-white text-lg mb-1">Francis Pwavwe</h3>
+                <div class="text-xs font-semibold px-3 py-1 rounded-full inline-block mb-3" style="background:linear-gradient(135deg,rgba(255,171,64,0.2),rgba(255,107,0,0.1));border:1px solid rgba(255,171,64,0.4);color:#FFAB40;">
+                    Chief Executive Officer
+                </div>
+                <p class="text-gray-400 text-sm leading-relaxed mb-4">Founder of AZ Learner and visionary behind AZ GPA Calculator. Flutter developer and product strategist building tools for Africa's next generation of students.</p>
+                <div class="flex flex-wrap justify-center gap-2">
+                    <span class="text-xs px-2 py-1 rounded-full bg-white/5 text-gray-300">Product Strategy</span>
+                    <span class="text-xs px-2 py-1 rounded-full bg-white/5 text-gray-300">Flutter</span>
+                    <span class="text-xs px-2 py-1 rounded-full bg-white/5 text-gray-300">AZ Learner</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Operations -->
+        <div class="grid md:grid-cols-2 gap-6">
+            <div class="glass-card rounded-2xl p-6 text-center">
+                <div class="avatar-ring inline-block mb-4">
+                    <img src="patrick.png" alt="Patrick Awuku Amada" class="w-16 h-16 rounded-full object-cover">
+                </div>
+                <h3 class="font-bold text-white mb-1">Patrick Awuku Amada</h3>
+                <div class="text-xs font-semibold px-3 py-1 rounded-full inline-block mb-3" style="background:rgba(59,130,246,0.15);border:1px solid rgba(59,130,246,0.35);color:#60a5fa;">
+                    Chief Operations Manager
+                </div>
+                <p class="text-gray-400 text-sm leading-relaxed mb-3">Oversees operational workflows and ensures the project stays on track across all phases of development.</p>
+                <div class="flex flex-wrap justify-center gap-2">
+                    <span class="text-xs px-2 py-1 rounded-full bg-white/5 text-gray-300">Operations</span>
+                    <span class="text-xs px-2 py-1 rounded-full bg-white/5 text-gray-300">Team Leadership</span>
+                    <span class="text-xs px-2 py-1 rounded-full bg-white/5 text-gray-300">Project Management</span>
+                </div>
+            </div>
+
+            <div class="glass-card rounded-2xl p-6 text-center">
+                <div class="avatar-ring inline-block mb-4" style="background:linear-gradient(135deg,#06b6d4,#0d9488);">
+                    <div class="w-16 h-16 rounded-full bg-gradient-to-br from-cyan-600 to-teal-700 flex items-center justify-center font-black text-xl text-white">G</div>
+                </div>
+                <h3 class="font-bold text-white mb-1">Griffiths Ampiaw</h3>
+                <div class="text-xs font-semibold px-3 py-1 rounded-full inline-block mb-3" style="background:rgba(6,182,212,0.15);border:1px solid rgba(6,182,212,0.35);color:#22d3ee;">
+                    Assistant Operations Manager
+                </div>
+                <p class="text-gray-400 text-sm leading-relaxed mb-3">Supports operational execution, coordination, and day-to-day project management tasks across the team.</p>
+                <div class="flex flex-wrap justify-center gap-2">
+                    <span class="text-xs px-2 py-1 rounded-full bg-white/5 text-gray-300">Operations</span>
+                    <span class="text-xs px-2 py-1 rounded-full bg-white/5 text-gray-300">Coordination</span>
+                    <span class="text-xs px-2 py-1 rounded-full bg-white/5 text-gray-300">Support</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-6 text-center">
+            <a href="team.html" class="inline-flex items-center gap-2 text-sm text-blue-400 hover:text-blue-300 transition font-medium">
+                <span class="material-symbols-outlined text-base">groups</span>
+                Meet the full team →
+            </a>
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- SLIDE 8 · Roadmap                                       -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="roadmap" class="max-w-6xl mx-auto px-6 pb-24">
+        <div class="text-center mb-14 slide-section">
+            <h2 class="text-3xl sm:text-5xl font-black text-gradient mb-3">Roadmap</h2>
+            <p class="text-gray-400 max-w-xl mx-auto">An 11-phase development plan from idea to archive — structured for quality and sustainability.</p>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-4">
+            <!-- Completed -->
+            <div class="glass-card rounded-2xl p-5">
+                <div class="mini-step">
+                    <div class="mini-icon" style="background:linear-gradient(135deg,#22c55e,#16a34a);">1</div>
+                    <div>
+                        <div class="font-bold text-white text-sm">Idea</div>
+                        <div class="text-gray-400 text-xs">Concept validation &amp; project inception</div>
+                    </div>
+                    <div class="ml-auto text-xs text-green-400 font-semibold">✓ Done</div>
+                </div>
+            </div>
+
+            <!-- Current -->
+            <div class="glass-card rounded-2xl p-5 border border-blue-500/30">
+                <div class="mini-step">
+                    <div class="mini-icon pulse-badge" style="background:linear-gradient(135deg,#3b82f6,#06b6d4);">2</div>
+                    <div>
+                        <div class="font-bold text-white text-sm">Research</div>
+                        <div class="text-gray-400 text-xs">Firebase, architecture &amp; technical stack</div>
+                    </div>
+                    <div class="ml-auto text-xs text-blue-400 font-semibold pulse-badge px-2 py-0.5 rounded-full bg-blue-500/10 border border-blue-500/30">Active</div>
+                </div>
+            </div>
+
+            <!-- Pending phases -->
+            <div class="glass-card rounded-2xl p-5">
+                <div class="mini-step">
+                    <div class="mini-icon" style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);color:#64748b;">3</div>
+                    <div>
+                        <div class="font-semibold text-gray-300 text-sm">Planning</div>
+                        <div class="text-gray-500 text-xs">Sprint planning, architecture design</div>
+                    </div>
+                </div>
+            </div>
+            <div class="glass-card rounded-2xl p-5">
+                <div class="mini-step">
+                    <div class="mini-icon" style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);color:#64748b;">4</div>
+                    <div>
+                        <div class="font-semibold text-gray-300 text-sm">Design</div>
+                        <div class="text-gray-500 text-xs">UI/UX wireframes &amp; design system</div>
+                    </div>
+                </div>
+            </div>
+            <div class="glass-card rounded-2xl p-5">
+                <div class="mini-step">
+                    <div class="mini-icon" style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);color:#64748b;">5</div>
+                    <div>
+                        <div class="font-semibold text-gray-300 text-sm">Development</div>
+                        <div class="text-gray-500 text-xs">Flutter app build &amp; feature implementation</div>
+                    </div>
+                </div>
+            </div>
+            <div class="glass-card rounded-2xl p-5">
+                <div class="mini-step">
+                    <div class="mini-icon" style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);color:#64748b;">6</div>
+                    <div>
+                        <div class="font-semibold text-gray-300 text-sm">Testing</div>
+                        <div class="text-gray-500 text-xs">QA, user testing &amp; bug fixes</div>
+                    </div>
+                </div>
+            </div>
+            <div class="glass-card rounded-2xl p-5">
+                <div class="mini-step">
+                    <div class="mini-icon" style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);color:#64748b;">7</div>
+                    <div>
+                        <div class="font-semibold text-gray-300 text-sm">Documentation</div>
+                        <div class="text-gray-500 text-xs">Technical docs &amp; user guides</div>
+                    </div>
+                </div>
+            </div>
+            <div class="glass-card rounded-2xl p-5">
+                <div class="mini-step">
+                    <div class="mini-icon" style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);color:#64748b;">8</div>
+                    <div>
+                        <div class="font-semibold text-gray-300 text-sm">Launch</div>
+                        <div class="text-gray-500 text-xs">App Store &amp; Play Store release</div>
+                    </div>
+                </div>
+            </div>
+            <div class="glass-card rounded-2xl p-5">
+                <div class="mini-step">
+                    <div class="mini-icon" style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);color:#64748b;">9</div>
+                    <div>
+                        <div class="font-semibold text-gray-300 text-sm">Marketing</div>
+                        <div class="text-gray-500 text-xs">Student outreach &amp; campus campaigns</div>
+                    </div>
+                </div>
+            </div>
+            <div class="glass-card rounded-2xl p-5">
+                <div class="mini-step">
+                    <div class="mini-icon" style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);color:#64748b;">10</div>
+                    <div>
+                        <div class="font-semibold text-gray-300 text-sm">Review</div>
+                        <div class="text-gray-500 text-xs">Post-launch feedback &amp; iteration</div>
+                    </div>
+                </div>
+            </div>
+            <div class="glass-card rounded-2xl p-5 md:col-span-2">
+                <div class="mini-step">
+                    <div class="mini-icon" style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);color:#64748b;">11</div>
+                    <div>
+                        <div class="font-semibold text-gray-300 text-sm">Archive &amp; Scale</div>
+                        <div class="text-gray-500 text-xs">Version 1.0 archive, v2.0 planning &amp; Pan-African expansion</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-6 text-center">
+            <a href="index.html#roadmap" class="inline-flex items-center gap-2 text-sm text-blue-400 hover:text-blue-300 transition font-medium">
+                <span class="material-symbols-outlined text-base">map</span>
+                View full detailed roadmap →
+            </a>
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- SLIDE 9 · Impact                                        -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="impact" class="max-w-6xl mx-auto px-6 pb-24">
+        <div class="text-center mb-14 slide-section">
+            <h2 class="text-3xl sm:text-5xl font-black text-gradient mb-3">Potential Impact</h2>
+            <p class="text-gray-400 max-w-xl mx-auto">Beyond a tool — a movement toward academic equity and empowerment across Africa.</p>
+        </div>
+
+        <div class="grid sm:grid-cols-2 gap-6">
+            <div class="glass-card rounded-2xl p-6 flex items-start gap-4">
+                <span class="text-3xl flex-shrink-0">🎓</span>
+                <div>
+                    <h3 class="font-bold text-white mb-2">Better Academic Outcomes</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">Students who understand their GPA trajectory study more strategically, leading to measurably improved graduation rates and class standings.</p>
+                </div>
+            </div>
+            <div class="glass-card rounded-2xl p-6 flex items-start gap-4">
+                <span class="text-3xl flex-shrink-0">🧠</span>
+                <div>
+                    <h3 class="font-bold text-white mb-2">Reduced Academic Anxiety</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">Real-time visibility into GPA progress replaces uncertainty with clarity, reducing the mental burden that affects student well-being and performance.</p>
+                </div>
+            </div>
+            <div class="glass-card rounded-2xl p-6 flex items-start gap-4">
+                <span class="text-3xl flex-shrink-0">🌍</span>
+                <div>
+                    <h3 class="font-bold text-white mb-2">Pan-African Scalability</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">The offline-first architecture is directly applicable across Nigeria, Kenya, Tanzania, and other markets with similar connectivity and academic structures.</p>
+                </div>
+            </div>
+            <div class="glass-card rounded-2xl p-6 flex items-start gap-4">
+                <span class="text-3xl flex-shrink-0">🏫</span>
+                <div>
+                    <h3 class="font-bold text-white mb-2">Institutional Value</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">Universities gain a retention and welfare tool — identifying at-risk students early and providing data-driven support resources at scale.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- SLIDE 10 · Call to Action                               -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="cta" class="max-w-4xl mx-auto px-6 pb-24 text-center">
+        <div class="glass-card rounded-3xl p-12 border border-blue-500/20 bg-gradient-to-br from-blue-500/5 to-cyan-500/5">
+            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-panel text-xs font-semibold text-blue-300 mb-6 border border-blue-500/30">
+                <span class="material-symbols-outlined text-base">handshake</span>
+                Let's Build Together
+            </div>
+
+            <h2 class="text-3xl sm:text-5xl font-black text-gradient mb-4">Ready to Invest<br>in African Education?</h2>
+            <p class="text-gray-300 text-lg mb-8 leading-relaxed max-w-xl mx-auto">
+                We are seeking seed funding, strategic partnerships, and institutional collaborations to bring AZ GPA Calculator to every Ghanaian university student — and beyond.
+            </p>
+
+            <div class="grid sm:grid-cols-3 gap-4 mb-10 text-left">
+                <div class="glass-card rounded-2xl p-4">
+                    <div class="flex items-center gap-2 mb-2">
+                        <span class="material-symbols-outlined text-blue-400 text-base">payments</span>
+                        <span class="font-semibold text-white text-sm">Seed Funding</span>
+                    </div>
+                    <p class="text-gray-400 text-xs">Seeking early-stage investment to accelerate development, testing, and launch phases.</p>
+                </div>
+                <div class="glass-card rounded-2xl p-4">
+                    <div class="flex items-center gap-2 mb-2">
+                        <span class="material-symbols-outlined text-green-400 text-base">school</span>
+                        <span class="font-semibold text-white text-sm">University Partners</span>
+                    </div>
+                    <p class="text-gray-400 text-xs">Pilot partnerships with leading Ghanaian universities for institutional licensing and feedback.</p>
+                </div>
+                <div class="glass-card rounded-2xl p-4">
+                    <div class="flex items-center gap-2 mb-2">
+                        <span class="material-symbols-outlined text-orange-400 text-base">groups</span>
+                        <span class="font-semibold text-white text-sm">Strategic Advisors</span>
+                    </div>
+                    <p class="text-gray-400 text-xs">EdTech, mobile, and Africa market experts who share our vision for student empowerment.</p>
+                </div>
+            </div>
+
+            <div class="flex flex-wrap gap-4 justify-center">
+                <a href="mailto:pwavwef@gmail.com?subject=AZ GPA Calculator - Partnership Inquiry"
+                   class="px-8 py-3 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold transition flex items-center gap-2">
+                    <span class="material-symbols-outlined text-base">mail</span>
+                    Get in Touch
+                </a>
+                <a href="https://azlearner.me/" target="_blank"
+                   class="px-8 py-3 rounded-xl glass-panel hover:bg-white/10 text-white font-bold transition flex items-center gap-2 border border-white/10">
+                    <span class="material-symbols-outlined text-base">open_in_new</span>
+                    Visit AZ Learner
+                </a>
+            </div>
+
+            <p class="mt-6 text-gray-600 text-xs">pwavwef@gmail.com &nbsp;·&nbsp; azlearner.me &nbsp;·&nbsp; Francis Pwavwe Production · © 2026</p>
+        </div>
+    </section>
+
+    <!-- ── Footer ─────────────────────────────────────────────── -->
+    <footer class="border-t border-white/5 py-10 text-center px-6">
+        <div class="max-w-6xl mx-auto">
+            <div class="flex items-center justify-center gap-3 mb-4">
+                <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-cyan-400 flex items-center justify-center font-black text-xs">AZ</div>
+                <span class="font-bold text-white">AZ GPA Calculator</span>
+            </div>
+            <p class="text-gray-500 text-sm mb-2">An AZ Learner production &nbsp;·&nbsp; &copy; 2026 Francis Pwavwe Production</p>
+            <p class="text-gray-600 text-xs">
+                <a href="mailto:pwavwef@gmail.com" class="hover:text-blue-400 transition">pwavwef@gmail.com</a>
+                &nbsp;·&nbsp;
+                <a href="https://azlearner.me/" target="_blank" class="hover:text-blue-400 transition">azlearner.me</a>
+            </p>
+            <div class="flex justify-center gap-4 mt-4 text-sm text-gray-500">
+                <a href="index.html"     class="hover:text-white transition">Idea</a>
+                <a href="team.html"      class="hover:text-white transition">Team</a>
+                <a href="contracts.html" class="hover:text-white transition">Contracts</a>
+                <a href="research.html"  class="hover:text-white transition">Research</a>
+                <a href="pitch.html"     class="hover:text-white transition">Pitch</a>
+                <a href="admin.html"     class="hover:text-white transition">Admin</a>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>
