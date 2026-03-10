@@ -563,6 +563,198 @@ admins / <span class="code-str">{userUID}</span>
         </div>
     </section>
 
+    <!-- ── Survey Results ───────────────────────────────────── -->
+    <section class="max-w-4xl mx-auto px-6 pb-16">
+        <div class="text-center mb-10">
+            <span class="text-xs font-bold text-orange-400 uppercase tracking-widest">User Research · Phase 1</span>
+            <h2 class="text-3xl sm:text-4xl font-black mt-2 text-gradient">Survey Results</h2>
+            <p class="text-gray-400 text-sm mt-3 max-w-xl mx-auto">
+                Results from the GPA Calculator user-research survey distributed to university students.
+                53 responses collected via WhatsApp and peer referrals.
+            </p>
+        </div>
+
+        <!-- ── Top-level stat cards ─────────────────────────── -->
+        <div class="grid sm:grid-cols-3 gap-5 mb-10">
+            <div class="glass-card rounded-2xl p-8 border border-blue-500/20 text-center">
+                <p class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-3">Total Responses</p>
+                <p class="text-6xl font-black text-blue-400">53</p>
+            </div>
+            <div class="glass-card rounded-2xl p-8 border border-green-500/20 text-center">
+                <p class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-3">Would Use App</p>
+                <p class="text-6xl font-black text-green-400">92%</p>
+                <p class="text-gray-500 text-xs mt-2">Definitely / Maybe</p>
+            </div>
+            <div class="glass-card rounded-2xl p-8 border border-orange-500/20 text-center">
+                <p class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-3">Willing to Pay</p>
+                <p class="text-6xl font-black" style="color:#FFAB40;">74%</p>
+                <p class="text-gray-500 text-xs mt-2">Yes / Maybe</p>
+            </div>
+        </div>
+
+        <!-- ── Question breakdowns ─────────────────────────── -->
+        <div class="grid sm:grid-cols-2 gap-5 mb-5">
+
+            <!-- Q1: Do you currently calculate your GPA? -->
+            <div class="glass-card rounded-2xl p-6 border border-blue-500/10">
+                <h4 class="font-black text-white text-sm mb-4">
+                    <span class="text-blue-400">Q1</span> · Do you currently calculate your GPA?
+                </h4>
+                <div class="flex flex-col gap-2">
+                    <div class="flex items-center gap-3">
+                        <span class="text-xs text-gray-400 w-20 shrink-0">Yes</span>
+                        <div class="flex-1 bg-white/5 rounded-full h-2 overflow-hidden">
+                            <div class="h-full bg-green-400 rounded-full" style="width:47%"></div>
+                        </div>
+                        <span class="text-xs text-gray-300 w-8 text-right">47%</span>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <span class="text-xs text-gray-400 w-20 shrink-0">Sometimes</span>
+                        <div class="flex-1 bg-white/5 rounded-full h-2 overflow-hidden">
+                            <div class="h-full bg-yellow-400 rounded-full" style="width:28%"></div>
+                        </div>
+                        <span class="text-xs text-gray-300 w-8 text-right">28%</span>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <span class="text-xs text-gray-400 w-20 shrink-0">No</span>
+                        <div class="flex-1 bg-white/5 rounded-full h-2 overflow-hidden">
+                            <div class="h-full bg-red-400 rounded-full" style="width:25%"></div>
+                        </div>
+                        <span class="text-xs text-gray-300 w-8 text-right">25%</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Q2: How do you calculate your GPA? -->
+            <div class="glass-card rounded-2xl p-6 border border-cyan-500/10">
+                <h4 class="font-black text-white text-sm mb-4">
+                    <span class="text-cyan-400">Q2</span> · How do you calculate your GPA?
+                </h4>
+                <div class="flex flex-col gap-2">
+                    <div class="flex items-center gap-3">
+                        <span class="text-xs text-gray-400 w-28 shrink-0">Manually</span>
+                        <div class="flex-1 bg-white/5 rounded-full h-2 overflow-hidden">
+                            <div class="h-full bg-blue-400 rounded-full" style="width:40%"></div>
+                        </div>
+                        <span class="text-xs text-gray-300 w-8 text-right">40%</span>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <span class="text-xs text-gray-400 w-28 shrink-0">Calculator app</span>
+                        <div class="flex-1 bg-white/5 rounded-full h-2 overflow-hidden">
+                            <div class="h-full bg-purple-400 rounded-full" style="width:23%"></div>
+                        </div>
+                        <span class="text-xs text-gray-300 w-8 text-right">23%</span>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <span class="text-xs text-gray-400 w-28 shrink-0">Website</span>
+                        <div class="flex-1 bg-white/5 rounded-full h-2 overflow-hidden">
+                            <div class="h-full bg-cyan-400 rounded-full" style="width:17%"></div>
+                        </div>
+                        <span class="text-xs text-gray-300 w-8 text-right">17%</span>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <span class="text-xs text-gray-400 w-28 shrink-0">Don't calculate</span>
+                        <div class="flex-1 bg-white/5 rounded-full h-2 overflow-hidden">
+                            <div class="h-full bg-gray-400 rounded-full" style="width:20%"></div>
+                        </div>
+                        <span class="text-xs text-gray-300 w-8 text-right">20%</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Q6: Would you use a dedicated GPA app? -->
+            <div class="glass-card rounded-2xl p-6 border border-green-500/10">
+                <h4 class="font-black text-white text-sm mb-4">
+                    <span class="text-green-400">Q6</span> · Would you use a dedicated GPA app?
+                </h4>
+                <div class="flex flex-col gap-2">
+                    <div class="flex items-center gap-3">
+                        <span class="text-xs text-gray-400 w-20 shrink-0">Definitely</span>
+                        <div class="flex-1 bg-white/5 rounded-full h-2 overflow-hidden">
+                            <div class="h-full bg-green-400 rounded-full" style="width:72%"></div>
+                        </div>
+                        <span class="text-xs text-gray-300 w-8 text-right">72%</span>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <span class="text-xs text-gray-400 w-20 shrink-0">Maybe</span>
+                        <div class="flex-1 bg-white/5 rounded-full h-2 overflow-hidden">
+                            <div class="h-full bg-yellow-400 rounded-full" style="width:20%"></div>
+                        </div>
+                        <span class="text-xs text-gray-300 w-8 text-right">20%</span>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <span class="text-xs text-gray-400 w-20 shrink-0">No</span>
+                        <div class="flex-1 bg-white/5 rounded-full h-2 overflow-hidden">
+                            <div class="h-full bg-red-400 rounded-full" style="width:8%"></div>
+                        </div>
+                        <span class="text-xs text-gray-300 w-8 text-right">8%</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Q10: How did you hear about this survey? -->
+            <div class="glass-card rounded-2xl p-6 border border-purple-500/10">
+                <h4 class="font-black text-white text-sm mb-4">
+                    <span class="text-purple-400">Q10</span> · How did you hear about this survey?
+                </h4>
+                <div class="flex flex-col gap-2">
+                    <div class="flex items-center gap-3">
+                        <span class="text-xs text-gray-400 w-36 shrink-0">WhatsApp</span>
+                        <div class="flex-1 bg-white/5 rounded-full h-2 overflow-hidden">
+                            <div class="h-full bg-green-400 rounded-full" style="width:57%"></div>
+                        </div>
+                        <span class="text-xs text-gray-300 w-8 text-right">57%</span>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <span class="text-xs text-gray-400 w-36 shrink-0">Friend / Classmate</span>
+                        <div class="flex-1 bg-white/5 rounded-full h-2 overflow-hidden">
+                            <div class="h-full bg-blue-400 rounded-full" style="width:36%"></div>
+                        </div>
+                        <span class="text-xs text-gray-300 w-8 text-right">36%</span>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <span class="text-xs text-gray-400 w-36 shrink-0">Other</span>
+                        <div class="flex-1 bg-white/5 rounded-full h-2 overflow-hidden">
+                            <div class="h-full bg-gray-400 rounded-full" style="width:7%"></div>
+                        </div>
+                        <span class="text-xs text-gray-300 w-8 text-right">7%</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- ── Key Insights callout ─────────────────────────── -->
+        <div class="glass-card rounded-2xl p-6 border border-blue-500/15">
+            <h4 class="font-black text-white mb-3 flex items-center gap-2">
+                <span class="material-symbols-outlined text-blue-400">lightbulb</span>
+                Key Insights
+            </h4>
+            <ul class="text-gray-400 text-sm space-y-2 leading-relaxed">
+                <li class="flex items-start gap-2">
+                    <span class="text-green-400 font-bold mt-0.5">✓</span>
+                    <span><strong class="text-white">Strong demand confirmed</strong> — 92% of respondents said they would <em>definitely</em> or <em>maybe</em> use a dedicated GPA app.</span>
+                </li>
+                <li class="flex items-start gap-2">
+                    <span class="text-green-400 font-bold mt-0.5">✓</span>
+                    <span><strong class="text-white">Manual calculation is the dominant method</strong> — 40% currently calculate GPA by hand, highlighting a clear usability gap.</span>
+                </li>
+                <li class="flex items-start gap-2">
+                    <span class="text-green-400 font-bold mt-0.5">✓</span>
+                    <span><strong class="text-white">Monetisation potential is real</strong> — 74% said they were willing or possibly willing to pay for a premium version.</span>
+                </li>
+                <li class="flex items-start gap-2">
+                    <span class="text-orange-400 font-bold mt-0.5">→</span>
+                    <span><strong class="text-white">Top desired feature: GPA Forecast</strong> — Predictive grading was the most-requested capability across all respondent groups.</span>
+                </li>
+                <li class="flex items-start gap-2">
+                    <span class="text-blue-400 font-bold mt-0.5">→</span>
+                    <span><strong class="text-white">WhatsApp is the primary growth channel</strong> — 57% of respondents discovered the survey via WhatsApp, confirming it as the core distribution channel.</span>
+                </li>
+            </ul>
+        </div>
+    </section>
+
     <!-- ── Summary Cards ─────────────────────────────────────── -->
     <section class="max-w-4xl mx-auto px-6 pb-24">
         <div class="text-center mb-10">
