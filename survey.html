@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="AZ GPA Calculator – GPA Tracking &amp; Forecasting Survey. Help us build the best GPA tool for Ghanaian university students.">
+    <meta name="author" content="Francis Pwavwe Production">
+    <title>AZ GPA Calculator | Survey</title>
+    <link rel="icon" type="image/png" href="https://pwavwef-web.github.io/favicon1.png">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+
+    <style>
+        :root {
+            --brand-blue: #3b82f6;
+            --brand-white: #ffffff;
+            --brand-orange: #FFAB40;
+        }
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #0f172a;
+            color: white;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+            -webkit-text-size-adjust: 100%;
+        }
+        *, *::before, *::after { box-sizing: border-box; }
+        html { overflow-x: hidden; }
+
+        .bg-animated {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: -2;
+            background: linear-gradient(-45deg, #020617, #0f172a, #1e3a8a, #172554);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+        }
+        @keyframes gradientBG {
+            0%   { background-position: 0% 50%; }
+            50%  { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .glass-panel {
+            background: rgba(255,255,255,0.03);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255,255,255,0.08);
+            box-shadow: 0 4px 30px rgba(0,0,0,0.1);
+        }
+        .glass-card {
+            background: rgba(255,255,255,0.03);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255,255,255,0.08);
+            transition: all 0.3s ease;
+        }
+
+        .text-gradient {
+            background: linear-gradient(to right, #ffffff, #60a5fa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .text-gradient-orange {
+            background: linear-gradient(to right, #FFAB40, #ff6b00);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-link { transition: color 0.2s; }
+        .nav-link:hover { color: #60a5fa; }
+        .nav-active { color: #60a5fa; border-bottom: 2px solid #3b82f6; }
+
+        /* Form styles */
+        .form-label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #e2e8f0;
+            margin-bottom: 0.5rem;
+        }
+        .form-label .required {
+            color: #f87171;
+            margin-left: 2px;
+        }
+        .form-input {
+            width: 100%;
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 10px;
+            padding: 0.75rem 1rem;
+            color: white;
+            font-size: 0.875rem;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            transition: border-color 0.2s, background 0.2s;
+            outline: none;
+        }
+        .form-input::placeholder { color: #64748b; }
+        .form-input:focus {
+            border-color: #3b82f6;
+            background: rgba(59,130,246,0.08);
+        }
+        .form-textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+        .radio-option, .checkbox-option {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.65rem 1rem;
+            border-radius: 10px;
+            border: 1px solid rgba(255,255,255,0.08);
+            background: rgba(255,255,255,0.03);
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.875rem;
+            color: #cbd5e1;
+        }
+        .radio-option:hover, .checkbox-option:hover {
+            background: rgba(59,130,246,0.1);
+            border-color: rgba(59,130,246,0.4);
+            color: white;
+        }
+        .radio-option input[type="radio"],
+        .checkbox-option input[type="checkbox"] {
+            accent-color: #3b82f6;
+            width: 16px;
+            height: 16px;
+            flex-shrink: 0;
+        }
+        .section-header {
+            background: linear-gradient(135deg, rgba(59,130,246,0.15), rgba(6,182,212,0.08));
+            border: 1px solid rgba(59,130,246,0.25);
+            border-radius: 16px;
+            padding: 1.25rem 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .section-header h2 {
+            font-size: 1rem;
+            font-weight: 800;
+            color: #93c5fd;
+        }
+        .question-block {
+            margin-bottom: 1.75rem;
+        }
+        .scale-row {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+        .scale-btn {
+            flex: 1;
+            min-width: 44px;
+            padding: 0.6rem 0.25rem;
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 10px;
+            background: rgba(255,255,255,0.04);
+            color: #94a3b8;
+            font-size: 0.875rem;
+            font-weight: 600;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .scale-btn:hover {
+            background: rgba(59,130,246,0.15);
+            border-color: rgba(59,130,246,0.5);
+            color: white;
+        }
+        .scale-btn input[type="radio"] { display: none; }
+        .scale-btn.selected,
+        .scale-btn:has(input:checked) {
+            background: rgba(59,130,246,0.3);
+            border-color: #3b82f6;
+            color: white;
+        }
+        .progress-bar-track {
+            width: 100%;
+            height: 4px;
+            background: rgba(255,255,255,0.08);
+            border-radius: 2px;
+            margin-bottom: 2rem;
+        }
+        .progress-bar-fill {
+            height: 100%;
+            background: linear-gradient(to right, #3b82f6, #06b6d4);
+            border-radius: 2px;
+            transition: width 0.4s ease;
+        }
+
+        /* Success screen */
+        #successScreen { display: none; }
+
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #0f172a; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #475569; }
+
+        @media (prefers-reduced-motion: reduce) {
+            .bg-animated { animation: none; background: linear-gradient(-45deg,#020617,#0f172a,#1e3a8a,#172554); }
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <div class="bg-animated"></div>
+
+    <!-- ── Navigation ─────────────────────────────────────────── -->
+    <nav class="fixed top-0 left-0 right-0 z-50 glass-panel px-6 py-4">
+        <div class="max-w-6xl mx-auto flex items-center justify-between">
+            <a href="index.html" class="flex items-center gap-3">
+                <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-400 flex items-center justify-center font-black text-sm">AZ</div>
+                <span class="font-bold text-sm tracking-wide hidden sm:block">GPA Calculator</span>
+            </a>
+            <div class="flex items-center gap-1 sm:gap-4 text-sm font-medium text-gray-300">
+                <a href="index.html"      class="nav-link px-3 py-1">Idea</a>
+                <a href="team.html"       class="nav-link px-3 py-1">Team</a>
+                <a href="contracts.html"  class="nav-link px-3 py-1">Contracts</a>
+                <a href="research.html"   class="nav-link px-3 py-1">Research</a>
+                <a href="survey.html"     class="nav-link nav-active px-3 py-1">Survey</a>
+                <a href="admin.html"      class="nav-link px-3 py-1">Admin</a>
+                <a href="https://azlearner.me/" target="_blank"
+                   class="hidden sm:flex items-center gap-1 px-3 py-1 rounded-lg bg-blue-600 hover:bg-blue-500 text-white transition text-xs">
+                    <span class="material-symbols-outlined text-base">open_in_new</span> AZ Learner
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ── Hero ───────────────────────────────────────────────── -->
+    <section class="min-h-[40vh] flex flex-col items-center justify-center text-center px-6 pt-28 pb-10">
+        <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-panel text-xs font-semibold text-orange-300 mb-6 border border-orange-500/30">
+            <span class="material-symbols-outlined text-base">poll</span>
+            GPA Tracking &amp; Forecasting Survey
+        </div>
+
+        <h1 class="text-4xl sm:text-6xl font-black mb-5 leading-tight">
+            <span class="text-gradient">Help Us Build</span><br>
+            <span class="text-gradient-orange">AZ GPA Calculator</span>
+        </h1>
+
+        <p class="max-w-xl text-gray-300 text-base mb-6 leading-relaxed">
+            A new standalone tool to bring intelligent GPA tracking to students across every Ghanaian university.
+            Takes approximately <strong class="text-white">3–5 minutes</strong>.
+        </p>
+
+        <div class="flex flex-wrap justify-center gap-4 text-sm text-gray-400">
+            <div class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-blue-400 text-base">quiz</span>
+                <span>10 questions</span>
+            </div>
+            <div class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-green-400 text-base">lock</span>
+                <span>100% anonymous</span>
+            </div>
+            <div class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-orange-400 text-base">school</span>
+                <span>All universities</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- ── Survey Form ────────────────────────────────────────── -->
+    <section class="max-w-2xl mx-auto px-6 pb-24">
+
+        <!-- Progress -->
+        <div class="mb-6">
+            <div class="flex justify-between text-xs text-gray-500 mb-2">
+                <span id="progressLabel">Progress</span>
+                <span id="progressPct">0%</span>
+            </div>
+            <div class="progress-bar-track">
+                <div class="progress-bar-fill" id="progressFill" style="width:0%"></div>
+            </div>
+        </div>
+
+        <!-- Form -->
+        <form id="surveyForm" novalidate>
+
+            <!-- ── Section 1 ─────────────────────────────────── -->
+            <div class="section-header">
+                <h2><span class="material-symbols-outlined text-base align-middle mr-1">person</span> Section 1 — About You</h2>
+            </div>
+
+            <!-- Email -->
+            <div class="question-block">
+                <label class="form-label" for="email">
+                    Email Address <span class="required">*</span>
+                    <span class="text-gray-500 font-normal text-xs ml-1">We'll only use this to share results with you. No spam, ever.</span>
+                </label>
+                <input class="form-input" type="email" id="email" name="email"
+                       placeholder="you@university.edu" required>
+            </div>
+
+            <!-- University -->
+            <div class="question-block">
+                <label class="form-label" for="university">
+                    University / School <span class="required">*</span>
+                </label>
+                <input class="form-input" type="text" id="university" name="university"
+                       placeholder="e.g. UCC, KNUST, UG, UDS…" required>
+            </div>
+
+            <!-- Year of Study -->
+            <div class="question-block">
+                <label class="form-label">
+                    Year of Study <span class="required">*</span>
+                </label>
+                <div class="flex flex-col gap-2">
+                    <label class="radio-option"><input type="radio" name="year" value="1st Year" required> 1st Year</label>
+                    <label class="radio-option"><input type="radio" name="year" value="2nd Year"> 2nd Year</label>
+                    <label class="radio-option"><input type="radio" name="year" value="3rd Year"> 3rd Year</label>
+                    <label class="radio-option"><input type="radio" name="year" value="4th Year"> 4th Year</label>
+                    <label class="radio-option"><input type="radio" name="year" value="5th Year+"> 5th Year+</label>
+                    <label class="radio-option"><input type="radio" name="year" value="Graduate"> Graduate</label>
+                </div>
+            </div>
+
+            <!-- Programme -->
+            <div class="question-block">
+                <label class="form-label" for="programme">
+                    Programme / Major <span class="required">*</span>
+                </label>
+                <input class="form-input" type="text" id="programme" name="programme"
+                       placeholder="e.g. Computer Science, Business Admin…" required>
+            </div>
+
+            <!-- Grading System -->
+            <div class="question-block">
+                <label class="form-label">
+                    What grading system does your school use? <span class="required">*</span>
+                </label>
+                <div class="flex flex-col gap-2">
+                    <label class="radio-option"><input type="radio" name="gradingSystem" value="4.0 GPA Scale" required> 4.0 GPA Scale</label>
+                    <label class="radio-option"><input type="radio" name="gradingSystem" value="5.0 GPA Scale"> 5.0 GPA Scale</label>
+                    <label class="radio-option"><input type="radio" name="gradingSystem" value="Percentage (0–100)"> Percentage (0–100)</label>
+                    <label class="radio-option"><input type="radio" name="gradingSystem" value="Letter Grades (A–F)"> Letter Grades (A–F)</label>
+                    <label class="radio-option"><input type="radio" name="gradingSystem" value="Other"> Other</label>
+                </div>
+            </div>
+
+            <!-- ── Section 2 ─────────────────────────────────── -->
+            <div class="section-header mt-8">
+                <h2><span class="material-symbols-outlined text-base align-middle mr-1">calculate</span> Section 2 — Your GPA Habits</h2>
+            </div>
+
+            <!-- Q1 -->
+            <div class="question-block">
+                <label class="form-label">
+                    1. Do you calculate your GPA every semester? <span class="required">*</span>
+                </label>
+                <div class="flex flex-col gap-2">
+                    <label class="radio-option"><input type="radio" name="q1" value="Yes — every semester" required> Yes — every semester</label>
+                    <label class="radio-option"><input type="radio" name="q1" value="Sometimes — only when I'm worried"> Sometimes — only when I'm worried</label>
+                    <label class="radio-option"><input type="radio" name="q1" value="No — I rely on my transcript"> No — I rely on my transcript</label>
+                </div>
+            </div>
+
+            <!-- Q2 -->
+            <div class="question-block">
+                <label class="form-label">
+                    2. How do you currently calculate your GPA? <span class="required">*</span>
+                </label>
+                <div class="flex flex-col gap-2">
+                    <label class="radio-option"><input type="radio" name="q2" value="Manually (pen &amp; paper or mental math)" required> Manually (pen &amp; paper or mental math)</label>
+                    <label class="radio-option"><input type="radio" name="q2" value="Spreadsheet or calculator"> Spreadsheet or calculator</label>
+                    <label class="radio-option"><input type="radio" name="q2" value="A website or online tool"> A website or online tool</label>
+                    <label class="radio-option"><input type="radio" name="q2" value="A mobile app"> A mobile app</label>
+                    <label class="radio-option"><input type="radio" name="q2" value="I don't calculate it"> I don't calculate it</label>
+                </div>
+            </div>
+
+            <!-- Q3 -->
+            <div class="question-block">
+                <label class="form-label">
+                    3. On a scale of 1–5, how confident are you that your GPA calculations are accurate? <span class="required">*</span>
+                </label>
+                <div class="scale-row mt-3">
+                    <span class="text-xs text-gray-500 shrink-0">Not at all</span>
+                    <label class="scale-btn" id="scale1"><input type="radio" name="q3" value="1" required> 1</label>
+                    <label class="scale-btn" id="scale2"><input type="radio" name="q3" value="2"> 2</label>
+                    <label class="scale-btn" id="scale3"><input type="radio" name="q3" value="3"> 3</label>
+                    <label class="scale-btn" id="scale4"><input type="radio" name="q3" value="4"> 4</label>
+                    <label class="scale-btn" id="scale5"><input type="radio" name="q3" value="5"> 5</label>
+                    <span class="text-xs text-gray-500 shrink-0">Very</span>
+                </div>
+            </div>
+
+            <!-- Q4 -->
+            <div class="question-block">
+                <label class="form-label">
+                    4. Have you ever been surprised by your final GPA at the end of a semester? <span class="required">*</span>
+                </label>
+                <div class="flex flex-col gap-2">
+                    <label class="radio-option"><input type="radio" name="q4" value="Yes" required> Yes 😮</label>
+                    <label class="radio-option"><input type="radio" name="q4" value="No — I track closely"> No — I track closely</label>
+                </div>
+            </div>
+
+            <!-- Q5 -->
+            <div class="question-block">
+                <label class="form-label">
+                    5. Do you know the exact score you need in upcoming exams to reach your target GPA? <span class="required">*</span>
+                </label>
+                <div class="flex flex-col gap-2">
+                    <label class="radio-option"><input type="radio" name="q5" value="Yes — I calculate it" required> Yes — I calculate it</label>
+                    <label class="radio-option"><input type="radio" name="q5" value="No — I just study hard"> No — I just study hard</label>
+                </div>
+            </div>
+
+            <!-- ── Section 3 ─────────────────────────────────── -->
+            <div class="section-header mt-8">
+                <div class="flex items-start gap-3">
+                    <span class="material-symbols-outlined text-orange-400 text-xl mt-0.5 shrink-0">lightbulb</span>
+                    <div>
+                        <h2 class="text-orange-300">Section 3 — Solution Validation</h2>
+                        <p class="text-gray-400 text-xs mt-1 leading-relaxed font-normal">
+                            We're building the <strong class="text-white">AZ GPA Calculator</strong> — a new standalone app that stores your academic records,
+                            forecasts your GPA, and tells you the exact scores needed to hit your target. It's designed for all universities — not just UCC —
+                            as part of our mission to scale AZ Learner across Ghana.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Q6 -->
+            <div class="question-block">
+                <label class="form-label">
+                    6. If such an app existed, how likely would you be to use it? <span class="required">*</span>
+                </label>
+                <div class="flex flex-col gap-2">
+                    <label class="radio-option"><input type="radio" name="q6" value="Definitely — sign me up" required> Definitely — sign me up 🚀</label>
+                    <label class="radio-option"><input type="radio" name="q6" value="Maybe — depends on the execution"> Maybe — depends on the execution</label>
+                    <label class="radio-option"><input type="radio" name="q6" value="No — I'm fine with my current method"> No — I'm fine with my current method</label>
+                </div>
+            </div>
+
+            <!-- Q7 -->
+            <div class="question-block">
+                <label class="form-label">
+                    7. Which features would matter most to you? <span class="text-gray-500 font-normal text-xs">(Select all that apply)</span>
+                </label>
+                <div class="flex flex-col gap-2">
+                    <label class="checkbox-option"><input type="checkbox" name="q7" value="GPA Forecasting"> GPA Forecasting (predict end-of-semester GPA)</label>
+                    <label class="checkbox-option"><input type="checkbox" name="q7" value="Score Calculator"> Score Calculator (exact marks needed per exam)</label>
+                    <label class="checkbox-option"><input type="checkbox" name="q7" value="Grade History"> Grade History (store all course grades)</label>
+                    <label class="checkbox-option"><input type="checkbox" name="q7" value="Academic Calendar &amp; Exam Reminders"> Academic Calendar &amp; Exam Reminders</label>
+                    <label class="checkbox-option"><input type="checkbox" name="q7" value="Visual Progress Dashboard"> Visual Progress Dashboard</label>
+                    <label class="checkbox-option"><input type="checkbox" name="q7" value="Share progress with an academic advisor"> Share progress with an academic advisor</label>
+                </div>
+            </div>
+
+            <!-- Q8 -->
+            <div class="question-block">
+                <label class="form-label">
+                    8. Would you pay a small monthly fee (¢5–¢10) for advanced features? <span class="required">*</span>
+                </label>
+                <div class="flex flex-col gap-2">
+                    <label class="radio-option"><input type="radio" name="q8" value="Yes — worth it" required> Yes — worth it 💰</label>
+                    <label class="radio-option"><input type="radio" name="q8" value="Maybe — depends on the features"> Maybe — depends on the features</label>
+                    <label class="radio-option"><input type="radio" name="q8" value="No — only if it's free"> No — only if it's free</label>
+                </div>
+            </div>
+
+            <!-- Q9 -->
+            <div class="question-block">
+                <label class="form-label" for="q9">
+                    9. What is the biggest challenge you face when trying to track or improve your GPA?
+                    <span class="text-gray-500 font-normal">(Optional)</span>
+                    <span class="block text-gray-500 font-normal text-xs mt-0.5">Be as detailed as you like — your honest feedback directly shapes the product.</span>
+                </label>
+                <textarea class="form-input form-textarea" id="q9" name="q9"
+                          placeholder="e.g. I never know my exact GPA until results are officially released…"></textarea>
+            </div>
+
+            <!-- Q10 -->
+            <div class="question-block">
+                <label class="form-label">
+                    10. How did you hear about this survey? <span class="required">*</span>
+                </label>
+                <div class="flex flex-col gap-2">
+                    <label class="radio-option"><input type="radio" name="q10" value="WhatsApp" required> WhatsApp</label>
+                    <label class="radio-option"><input type="radio" name="q10" value="Instagram"> Instagram</label>
+                    <label class="radio-option"><input type="radio" name="q10" value="Twitter / X"> Twitter / X</label>
+                    <label class="radio-option"><input type="radio" name="q10" value="Friend or Classmate"> Friend or Classmate</label>
+                    <label class="radio-option"><input type="radio" name="q10" value="Other"> Other</label>
+                </div>
+            </div>
+
+            <!-- Error message -->
+            <p id="formError" class="text-red-400 text-sm mb-4 hidden">
+                <span class="material-symbols-outlined text-base align-middle mr-1">error</span>
+                Please fill in all required fields before submitting.
+            </p>
+
+            <!-- Submit -->
+            <button type="submit"
+                    class="w-full py-4 rounded-xl bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-500 hover:to-cyan-400
+                           text-white font-black text-base transition-all shadow-lg hover:shadow-blue-500/25 flex items-center justify-center gap-2">
+                <span class="material-symbols-outlined text-xl">send</span>
+                Submit Response
+            </button>
+
+        </form>
+
+        <!-- ── Success screen ─────────────────────────────────── -->
+        <div id="successScreen" class="text-center py-16">
+            <div class="w-20 h-20 rounded-full bg-gradient-to-br from-green-500 to-emerald-400 flex items-center justify-center mx-auto mb-6 shadow-lg shadow-green-500/30">
+                <span class="material-symbols-outlined text-4xl text-white">check_circle</span>
+            </div>
+            <h2 class="text-3xl font-black text-white mb-3">Thank you! 🎉</h2>
+            <p class="text-gray-300 text-base mb-2">Your response has been recorded.</p>
+            <p class="text-gray-400 text-sm mb-8">We'll share the results and updates on the AZ GPA Calculator with you.</p>
+            <div class="flex flex-wrap justify-center gap-4">
+                <a href="research.html"
+                   class="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-blue-600/20 border border-blue-500/30 hover:bg-blue-600/30 text-blue-300 text-sm font-semibold transition">
+                    <span class="material-symbols-outlined text-base">bar_chart</span> View Survey Results
+                </a>
+                <a href="index.html"
+                   class="inline-flex items-center gap-2 px-5 py-3 rounded-xl glass-card hover:bg-white/10 text-gray-300 text-sm font-semibold transition">
+                    <span class="material-symbols-outlined text-base">home</span> Back to Home
+                </a>
+            </div>
+        </div>
+
+    </section>
+
+    <!-- ── Footer ─────────────────────────────────────────────── -->
+    <footer class="border-t border-white/5 py-10 text-center px-6">
+        <div class="max-w-6xl mx-auto">
+            <div class="flex items-center justify-center gap-3 mb-4">
+                <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-cyan-400 flex items-center justify-center font-black text-xs">AZ</div>
+                <span class="font-bold text-white">AZ GPA Calculator</span>
+            </div>
+            <p class="text-gray-500 text-sm mb-2">An AZ Learner production &nbsp;·&nbsp; &copy; 2026 Francis Pwavwe Production</p>
+            <p class="text-gray-600 text-xs">
+                <a href="mailto:pwavwef@gmail.com" class="hover:text-blue-400 transition">pwavwef@gmail.com</a>
+                &nbsp;·&nbsp;
+                <a href="https://azlearner.me/" target="_blank" class="hover:text-blue-400 transition">azlearner.me</a>
+            </p>
+            <div class="flex justify-center gap-4 mt-4 text-sm text-gray-500">
+                <a href="index.html"      class="hover:text-white transition">Idea</a>
+                <a href="team.html"       class="hover:text-white transition">Team</a>
+                <a href="contracts.html"  class="hover:text-white transition">Contracts</a>
+                <a href="research.html"   class="hover:text-white transition">Research</a>
+                <a href="survey.html"     class="hover:text-white transition">Survey</a>
+                <a href="admin.html"      class="hover:text-white transition">Admin</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // ── Progress tracking ─────────────────────────────────
+        const REQUIRED_FIELDS = ['email','university','year','programme','gradingSystem','q1','q2','q3','q4','q5','q6','q8','q10'];
+        const TOTAL = REQUIRED_FIELDS.length;
+
+        function countFilled() {
+            let filled = 0;
+            REQUIRED_FIELDS.forEach(name => {
+                const els = document.querySelectorAll(`[name="${name}"]`);
+                if (!els.length) return;
+                const type = els[0].type;
+                if (type === 'radio') {
+                    if ([...els].some(el => el.checked)) filled++;
+                } else if (type === 'email' || type === 'text') {
+                    if (els[0].value.trim()) filled++;
+                }
+            });
+            return filled;
+        }
+
+        function updateProgress() {
+            const pct = Math.round((countFilled() / TOTAL) * 100);
+            document.getElementById('progressFill').style.width = pct + '%';
+            document.getElementById('progressPct').textContent = pct + '%';
+        }
+
+        document.getElementById('surveyForm').addEventListener('input', updateProgress);
+
+        // ── Scale button highlighting ─────────────────────────
+        document.querySelectorAll('.scale-btn input[type="radio"]').forEach(radio => {
+            radio.addEventListener('change', () => {
+                document.querySelectorAll('.scale-btn').forEach(btn => btn.classList.remove('selected'));
+                radio.closest('.scale-btn').classList.add('selected');
+            });
+        });
+
+        // ── Form submission ───────────────────────────────────
+        document.getElementById('surveyForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            // Validate required fields
+            let valid = true;
+            REQUIRED_FIELDS.forEach(name => {
+                const els = document.querySelectorAll(`[name="${name}"]`);
+                if (!els.length) return;
+                const type = els[0].type;
+                if (type === 'radio') {
+                    if (![...els].some(el => el.checked)) valid = false;
+                } else {
+                    if (!els[0].value.trim()) valid = false;
+                }
+            });
+
+            if (!valid) {
+                document.getElementById('formError').classList.remove('hidden');
+                document.getElementById('formError').scrollIntoView({ behavior: 'smooth', block: 'center' });
+                return;
+            }
+
+            document.getElementById('formError').classList.add('hidden');
+
+            // Show success screen
+            document.getElementById('surveyForm').style.display = 'none';
+            const success = document.getElementById('successScreen');
+            success.style.display = 'block';
+            success.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
+    </script>
+
+</body>
+</html>
